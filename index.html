@@ -8,117 +8,104 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Photo Journal</title>
 <style>
-/************* BODY STYLE *****************/
+  /* --- Body & basic typography --- */
   body { 
     font-family: Arial, sans-serif; 
     background: #f0f2f5; 
-    margin:0; 
-    padding:10px 20px; 
+    margin:0; padding:32px; 
     color:#222; 
-}
-/************* END BODY STYLE *****************/
-/************* H1 STYLE *****************/
-  h1 { 
-    text-align:center; 
-    margin-bottom:2px; 
-}
-/************* END H1 STYLE *****************/
-/************* CONTROLS STYLE *****************/
-  .controls { 
-    max-width:720px; 
-    margin-top:20px auto 24px auto; 
-    margin-bottom: 20px;
-    display:flex; 
-    gap:12px; 
-    align-items:center; 
-    justify-content:center; 
-    flex-wrap:wrap; 
-}
-/************* END CONTROLS STYLE *****************/
-/************* CONTROLS INPUT STYLE *****************/
-   .controls input[type="file"] { 
-    padding:8px 10px; 
-    border-radius:8px; 
-    border:1px solid #a9a7b4; 
-    background:white; 
-}
-/************* END CONTROLS INPUT STYLE *****************/
-/************* CONTROLS BUTTON STYLE *****************/
+  }
+  h1 { text-align:center; margin-bottom:20px; font-size:1.8em; }
+
+  /* --- Navigation Bar --- */
+  #navContainer {
+    width: 100%;
+    display: flex; justify-content: center; margin-bottom: 20px;
+  }
+  .nav-bar {
+    display: flex; justify-content: center; flex-wrap: wrap;
+    gap: 10px; background: #e0e4e8;
+    padding: 10px 20px; border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    max-width: fit-content;
+  }
+  .nav-bar button {
+    padding: 8px 14px;
+    border-radius: 8px;
+    border: none;
+    background: #2d8cff;
+    color: white;
+    cursor: pointer;
+    font-weight: 600;
+    min-width: 60px;
+  }
+  .nav-bar button.disabled { 
+    background: #a0b0c0; cursor: not-allowed; 
+  }
+
+  /* --- Controls (date/photo input) --- */
+  .controls {
+    max-width:720px; margin:0 auto 24px auto; 
+    display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;
+  }
+  .controls input[type="date"], .controls input[type="file"] {
+    padding:8px 10px; border-radius:8px; border:1px solid #ddd; background:white; width: 150px;
+  }
   .controls button { 
-    padding:8px 14px; 
-    border-radius:8px; 
-    border:none; 
-    background:#2d8cff; 
-    color:white; 
-    cursor:pointer; 
-    font-weight:600; 
-}
-  .controls button:active { 
-    transform:translateY(1px); 
-}
-/************* END CONTROLS BUTTON STYLE *****************/
-/************* ENTRIES STYLE *****************/
-  #entries { 
-    max-width:720px; 
-    margin:0 auto; 
-}
-/************* END ENTRIES STYLE *****************/
-/************* EMPTY STYLE *****************/
-  .empty { 
-    text-align:center; 
-    color:#666; 
-    padding:24px; 
-}
-/************* END EMPTY STYLE *****************/
-/************* BUTTON STYLE *****************/
-  button { 
-    font-family:inherit; 
-}
-/************* END BUTTON STYLE *****************/
-/************* NAV BAR STYLE *****************/
-.nav-bar {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  max-width: fit-content;
-  margin: 0 auto 20px auto;
-  background: #e0e4e8;      /* light gray background to look like a bar */
-  padding: 5px 20px;
-  border-radius: 12px;       /* rounded corners for the “window” */
-  box-shadow: 5px 5px 5px rgba(31, 7, 192, 0.1);
-}
+    padding:8px 14px; border-radius:8px; border:none; background:#2d8cff; color:white; cursor:pointer; font-weight:600; 
+  }
 
-.nav-bar button {
-  background: #555;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  opacity: 1;
-  transition: all 0.2s ease;
-  box-shadow: 5px 5px 5px rgba(43, 7, 224, 0.1);
-}
+  /* --- Entries --- */
+  #entries { max-width:720px; margin:0 auto; }
+  .empty { text-align:center; color:#666; padding:24px; }
 
-.nav-bar button:hover {
-  background: #777;
-}
+  /* --- Day Grid --- */
+  .day-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fit, minmax(40px,1fr));
+    gap:8px;
+    justify-items:center;
+    margin-bottom: 20px;
+  }
 
-.nav-bar button.disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-/************* END NAV BAR STYLE *****************/
+  /* --- Photos --- */
+  .photo-container {
+    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom:20px;
+  }
+  .photo-container img {
+    width: calc(25vw - 10px); height: calc(25vw - 10px);
+    max-width: 120px; max-height: 120px;
+    object-fit: cover; border-radius: 8px; cursor: pointer;
+  }
 
+  /* --- Journal Textarea --- */
+  textarea {
+    width: 100%; max-width:720px; height:120px; margin-bottom:16px;
+    padding:10px; border-radius:8px; border:1px solid #ccc;
+  }
+
+  /* --- Buttons --- */
+  button { font-family:inherit; }
+
+  /* --- Responsive tweaks for small screens --- */
+  @media (max-width: 500px) {
+    .nav-bar { flex-direction: column; padding: 8px; }
+    .controls { flex-direction: column; gap:8px; }
+    .controls input[type="date"], .controls input[type="file"] { width: 100%; }
+  }
 
 </style>
 </head>
 <body>
+
 <h1>📸 My Photo Journal</h1>
 
+<!-- Navigation Bar -->
+<div id="navContainer"></div>
+
+<!-- Controls -->
 <div class="controls">
+  <input id="dateInput" type="date" required>
   <input id="photoInput" type="file" accept="image/*" required>
   <button id="addBtn">Add Photo</button>
 </div>
@@ -130,280 +117,158 @@
 <script>
 let photoEntries = JSON.parse(localStorage.getItem("photoEntries")) || {};
 let currentDayKey = null;
+let currentView = "year";
+let currentYear = null;
+let currentMonth = null;
 
+const dateInput = document.getElementById("dateInput");
 const photoInput = document.getElementById("photoInput");
 const addBtn = document.getElementById("addBtn");
 const entriesDiv = document.getElementById("entries");
 const emptyMsg = document.getElementById("emptyMsg");
 
+// --- Storage ---
 function persist() { localStorage.setItem("photoEntries", JSON.stringify(photoEntries)); }
 function refreshEmptyMessage() { emptyMsg.style.display = Object.keys(photoEntries).length>0 ? "none" : "block"; }
 
-// ---------------- NAVIGATION BAR
+// --- NAVIGATION BAR ---
 function addNavigation(year, monthNum) {
   const navDiv = document.createElement("div");
   navDiv.className = "nav-bar";
 
+  const backBtn = document.createElement("button");
+  backBtn.textContent = "← Back";
+  backBtn.onclick = () => {
+    if(currentView==="month") showYearView();
+    else if(currentView==="day") showMonthView(currentYear);
+    else if(currentView==="dayDetail") showDayView(currentYear, currentMonth);
+  };
+  if(currentView==="year") backBtn.classList.add("disabled");
+  navDiv.appendChild(backBtn);
+
   const yearsBtn = document.createElement("button");
-  yearsBtn.textContent = "Years";
-  yearsBtn.onclick = () => showYearView();
+  yearsBtn.textContent = "Years"; yearsBtn.onclick = () => showYearView();
   navDiv.appendChild(yearsBtn);
 
   const monthsBtn = document.createElement("button");
   monthsBtn.textContent = "Months";
-  if (year !== undefined) {
-    monthsBtn.onclick = () => showMonthView(year);
-  } else {
-    monthsBtn.classList.add("disabled");
-  }
+  if(year) monthsBtn.onclick = () => showMonthView(year);
+  else monthsBtn.classList.add("disabled");
   navDiv.appendChild(monthsBtn);
 
   const daysBtn = document.createElement("button");
   daysBtn.textContent = "Days";
-  if (year !== undefined && monthNum !== undefined) {
-    daysBtn.onclick = () => showDayView(year, monthNum);
-  } else {
-    daysBtn.classList.add("disabled");
-  }
+  if(year && monthNum) daysBtn.onclick = () => showDayView(year, monthNum);
+  else daysBtn.classList.add("disabled");
   navDiv.appendChild(daysBtn);
 
-  entriesDiv.prepend(navDiv);
+  document.getElementById("navContainer").innerHTML = "";
+  document.getElementById("navContainer").appendChild(navDiv);
 }
 
-// ---------------- YEAR VIEW
+// --- YEAR VIEW ---
 function showYearView() {
-  entriesDiv.innerHTML = "";
-  addNavigation(); // Add navigation
-
+  currentView="year"; currentYear=null; currentMonth=null;
+  entriesDiv.innerHTML=""; addNavigation();
   const years = Object.keys(photoEntries).map(d=>d.split("-")[0])
                 .filter((v,i,a)=>a.indexOf(v)===i).sort().reverse();
   if(years.length===0){ entriesDiv.innerHTML="<div class='empty'>No entries yet.</div>"; return; }
-
   years.forEach(year=>{
     const btn = document.createElement("button");
     btn.textContent=year;
-    btn.style.margin="8px"; 
-    btn.style.padding="12px 20px"; 
-    btn.style.borderRadius="8px"; 
-    btn.style.cursor="pointer";
     btn.addEventListener("click",()=>showMonthView(year));
     entriesDiv.appendChild(btn);
   });
 }
 
-// ---------------- MONTH VIEW
+// --- MONTH VIEW ---
 function showMonthView(year){
-  entriesDiv.innerHTML="";
-  addNavigation(year); // Add navigation
-
-  const title=document.createElement("h2");
-  title.textContent=`Year: ${year}`; 
-  title.style.textAlign="center"; 
-  title.style.marginBottom="20px";
-  entriesDiv.appendChild(title);
-
-  const monthsContainer=document.createElement("div");
-  monthsContainer.style.display="flex"; 
-  monthsContainer.style.flexWrap="wrap";
-  monthsContainer.style.justifyContent="center"; 
-  monthsContainer.style.gap="12px";
+  currentView="month"; currentYear=year; currentMonth=null;
+  entriesDiv.innerHTML=""; addNavigation(year);
+  const title=document.createElement("h2"); title.textContent=`Year: ${year}`; entriesDiv.appendChild(title);
+  const monthsContainer=document.createElement("div"); monthsContainer.style.display="flex"; monthsContainer.style.flexWrap="wrap"; monthsContainer.style.justifyContent="center"; monthsContainer.style.gap="12px";
   entriesDiv.appendChild(monthsContainer);
-
   const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
   months.forEach((monthName,index)=>{
     const monthNum=(index+1).toString().padStart(2,"0");
     const btn=document.createElement("button");
     btn.textContent=monthName;
-    btn.style.width="100px"; 
-    btn.style.padding="12px 0"; 
-    btn.style.borderRadius="8px"; 
-    btn.style.cursor="pointer"; 
-    btn.style.fontWeight="600";
     btn.addEventListener("click",()=>showDayView(year,monthNum));
     monthsContainer.appendChild(btn);
   });
-
-  const backBtn=document.createElement("button");
-  backBtn.textContent="← Back to Years";
-  backBtn.style.display="block"; 
-  backBtn.style.margin="20px auto"; 
-  backBtn.style.padding="8px 14px"; 
-  backBtn.style.borderRadius="8px"; 
-  backBtn.style.cursor="pointer";
-  backBtn.addEventListener("click",showYearView);
-  entriesDiv.appendChild(backBtn);
 }
 
-// ---------------- DAY VIEW
+// --- DAY VIEW ---
 function showDayView(year,monthNum){
-  entriesDiv.innerHTML="";
-  addNavigation(year, monthNum); // Add navigation
-
+  currentView="day"; currentYear=year; currentMonth=monthNum;
+  entriesDiv.innerHTML=""; addNavigation(year,monthNum);
   const monthName=new Date(year,parseInt(monthNum)-1).toLocaleString('default',{month:'long'});
-  const title=document.createElement("h2"); 
-  title.textContent=`${monthName} ${year}`; 
-  title.style.textAlign="center"; 
-  title.style.marginBottom="20px";
-  entriesDiv.appendChild(title);
+  const title=document.createElement("h2"); title.textContent=`${monthName} ${year}`; entriesDiv.appendChild(title);
 
-  const daysContainer=document.createElement("div");
-  daysContainer.style.display="grid"; 
-  daysContainer.style.gridTemplateColumns="repeat(7,1fr)"; 
-  daysContainer.style.gap="8px"; 
-  daysContainer.style.justifyItems="center";
-  entriesDiv.appendChild(daysContainer);
-
+  const daysContainer=document.createElement("div"); daysContainer.className="day-grid"; entriesDiv.appendChild(daysContainer);
   const daysInMonth=new Date(year,parseInt(monthNum),0).getDate();
   for(let day=1;day<=daysInMonth;day++){
     const dayStr=day.toString().padStart(2,"0");
-    const btn=document.createElement("button"); 
-    btn.textContent=day; btn.style.width="40px"; 
-    btn.style.height="40px"; 
-    btn.style.borderRadius="6px"; 
-    btn.style.cursor="pointer"; 
-    btn.style.fontWeight="500";
+    const btn=document.createElement("button"); btn.textContent=day;
     const key=`${year}-${monthNum}-${dayStr}`;
     if(photoEntries[key] && photoEntries[key].photos && photoEntries[key].photos.length>0){ 
-        btn.style.backgroundColor="#2d8cff"; 
-        btn.style.color="white"; 
+        btn.style.backgroundColor="#2d8cff"; btn.style.color="white"; 
     }
     btn.addEventListener("click",()=>showDayDetail(year,monthNum,dayStr));
     daysContainer.appendChild(btn);
   }
-
-  const backBtn=document.createElement("button");
-  backBtn.textContent="← Back to Months";
-  backBtn.style.display="block"; 
-  backBtn.style.margin="20px auto"; 
-  backBtn.style.padding="8px 14px"; 
-  backBtn.style.borderRadius="8px"; 
-  backBtn.style.cursor="pointer";
-  backBtn.addEventListener("click",()=>showMonthView(year));
-  entriesDiv.appendChild(backBtn);
 }
 
-// ---------------- DAY DETAIL VIEW
+// --- DAY DETAIL ---
 function showDayDetail(year,monthNum,dayNum){
-  entriesDiv.innerHTML = "";
-  addNavigation(year, monthNum); // Add navigation
-
-  currentDayKey=`${year}-${monthNum.padStart(2,'0')}-${dayNum.padStart(2,'0')}`;
-  const key=currentDayKey;
-
+  currentView="dayDetail"; currentYear=year; currentMonth=monthNum; currentDayKey=`${year}-${monthNum.padStart(2,'0')}-${dayNum.padStart(2,'0')}`;
+  entriesDiv.innerHTML=""; addNavigation(year,monthNum);
+  
   const date=new Date(year,parseInt(monthNum)-1,dayNum);
-  const title=document.createElement("h2"); 
-  title.textContent=date.toDateString(); 
-  title.style.textAlign="center"; 
-  title.style.marginBottom="20px";
-  entriesDiv.appendChild(title);
+  const title=document.createElement("h2"); title.textContent=date.toDateString(); entriesDiv.appendChild(title);
 
-  const photosDiv = document.createElement("div");
-  photosDiv.style.display = "flex";
-  photosDiv.style.flexWrap = "wrap";
-  photosDiv.style.gap = "10px";
-  photosDiv.style.justifyContent = "center";
-  photosDiv.style.marginBottom = "20px";
-  entriesDiv.appendChild(photosDiv);
+  const photosDiv=document.createElement("div"); photosDiv.className="photo-container"; entriesDiv.appendChild(photosDiv);
+  const journalArea=document.createElement("textarea"); journalArea.placeholder="Write your journal entry here..."; 
+  journalArea.value=(photoEntries[currentDayKey] && photoEntries[currentDayKey].journal)||""; entriesDiv.appendChild(journalArea);
 
-  const journalArea=document.createElement("textarea"); 
-  journalArea.placeholder="Write your journal entry here...";
-  journalArea.style.width="100%"; 
-  journalArea.style.maxWidth="720px"; 
-  journalArea.style.height="120px"; 
-  journalArea.style.marginBottom="16px";
-  journalArea.style.padding="10px"; 
-  journalArea.style.borderRadius="8px"; 
-  journalArea.style.border="1px solid #ccc";
-  journalArea.value=(photoEntries[key] && photoEntries[key].journal)||"";
-  entriesDiv.appendChild(journalArea);
+  const saveBtn=document.createElement("button"); saveBtn.textContent="Save Journal"; saveBtn.addEventListener("click",()=>{
+    if(!photoEntries[currentDayKey]) photoEntries[currentDayKey]={photos:[],journal:""};
+    photoEntries[currentDayKey].journal=journalArea.value; persist(); alert("Journal saved!");
+  }); entriesDiv.appendChild(saveBtn);
 
-  const saveBtn=document.createElement("button"); 
-  saveBtn.textContent="Save Journal"; 
-  saveBtn.style.display="block"; 
-  saveBtn.style.margin="0 auto 20px auto"; 
-  saveBtn.style.padding="8px 14px"; 
-  saveBtn.style.borderRadius="8px"; 
-  saveBtn.style.cursor="pointer";
-  saveBtn.addEventListener("click",()=>{
-    if(!photoEntries[key]) photoEntries[key]={photos:[],journal:""};
-    photoEntries[key].journal=journalArea.value;
-    persist(); alert("Journal saved!");
-  });
-  entriesDiv.appendChild(saveBtn);
-
-  const photos=(photoEntries[key] && photoEntries[key].photos)||[];
+  const photos=(photoEntries[currentDayKey] && photoEntries[currentDayKey].photos)||[];
   photos.forEach(src=>{
-    const img=document.createElement("img"); 
-    img.src=src; 
-    img.alt=`Photo for ${key}`; 
-    img.style.width="120px"; 
-    img.style.height="120px"; 
-    img.style.objectFit="cover"; 
-    img.style.borderRadius="8px"; 
-    img.style.cursor="pointer";
-    
+    const img=document.createElement("img"); img.src=src;
     img.addEventListener("click",()=>{
       if(!confirm("Delete this photo?")) return;
-      photoEntries[key].photos=photoEntries[key].photos.filter(p=>p!==src);
-      if(photoEntries[key].photos.length===0 && !photoEntries[key].journal) {
-        delete photoEntries[key];
-      }
-      persist();
-      showDayDetail(year,monthNum,dayNum);
-    });
-    photosDiv.appendChild(img);
+      photoEntries[currentDayKey].photos=photoEntries[currentDayKey].photos.filter(p=>p!==src);
+      if(photoEntries[currentDayKey].photos.length===0 && !photoEntries[currentDayKey].journal) delete photoEntries[currentDayKey];
+      persist(); showDayDetail(year,monthNum,dayNum);
+    }); photosDiv.appendChild(img);
   });
-
-  const backBtn=document.createElement("button"); 
-  backBtn.textContent="← Back to Month";
-  backBtn.style.display="block"; 
-  backBtn.style.margin="20px auto"; 
-  backBtn.style.padding="8px 14px"; 
-  backBtn.style.borderRadius="8px"; 
-  backBtn.style.cursor="pointer";
-  backBtn.addEventListener("click",()=>showDayView(year,monthNum));
-  entriesDiv.appendChild(backBtn);
 }
 
-// ---------------- ADD PHOTO BUTTON
+// --- ADD PHOTO ---
 addBtn.addEventListener("click", e => {
   e.preventDefault();
-
-  if (!currentDayKey) {
-    alert("Select a day first in the calendar.");
-    return;
-  }
-
-  const file = photoInput.files[0];
-  if (!file) {
-    alert("Select an image.");
-    return;
-  }
-
+  if(!currentDayKey){ alert("Select a day first."); return; }
+  const file = photoInput.files[0]; if(!file){ alert("Select an image."); return; }
   const reader = new FileReader();
   reader.onload = ev => {
     const dataUrl = ev.target.result;
-
-    if (!photoEntries[currentDayKey]) {
-      photoEntries[currentDayKey] = { photos: [], journal: "" };
-    } else if (Array.isArray(photoEntries[currentDayKey])) {
-      photoEntries[currentDayKey] = { photos: photoEntries[currentDayKey], journal: "" };
-    }
-
+    if(!photoEntries[currentDayKey]) photoEntries[currentDayKey]={photos:[],journal:""};
     photoEntries[currentDayKey].photos.push(dataUrl);
     persist();
-
     const [year, month, day] = currentDayKey.split("-");
     showDayDetail(year, month, day);
-    photoInput.value = "";
+    photoInput.value="";
   };
   reader.readAsDataURL(file);
 });
 
-// ---------------- INIT
-refreshEmptyMessage();
-showYearView();
-
+// --- INIT ---
+refreshEmptyMessage(); showYearView();
 </script>
 </body>
 </html>
+
