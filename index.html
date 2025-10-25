@@ -7,263 +7,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Photo Journal</title>
-<style>
-/************* GLASSIFY *****************/
-.glassify {
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-    border:1px solid rgba(255,255,255,0.4);
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.7);
-}
-.glassify:hover {
-    background: rgba(255,255,255,.5);
-    transform: translateY(-2px);
-}
-textarea.glassify {
-    background: rgba(255,255,255,0.1);
-    border: 1px solid rgba(255,255,255,0.4);
-    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
-    color: white;
-    backdrop-filter: blur(6px);
-    -webkit-backdrop-filter: blur(6px);
-}
-textarea.glassify:hover {
-    background: rgba(255,255,255,0.1);
-    transform: translateY(-2px);
-}
-/************* END GLASSIFY *****************/
-/************* BODY STYLE *****************/
-  body { 
-    font-family: 'Times New Roman', Times, serif; 
-    background: url("Background Image.png"); 
-    background-size: cover;
-    background-position: center;
-    background-attachment: fixed;
-    margin:0; 
-    padding:10px 20px; 
-    color:#222; 
-}
-  body::before {
-    content: "";
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: -1;
-  }
-
-/************* END BODY STYLE *****************/
-/************* FILE INPUT STYLE *****************/
-  .file-input {
-    display: none;
-  }
-
-  .file-label {
-    display: inline-block;
-    padding: 10px 16px;
-    border-radius: 10px;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s ease;
-  }
-
-  .file-label:hover {
-    background: rgba(0,12,255,0.6);
-  }
-
-  #fileStatus {
-    margin-left: 12px;
-    font-size: 0.9em;
-    color: rgba(255,255,255,1);
-    font-style: italic;
-    transition: color 0.3s ease, opacity 0.3s ease;
-    opacity: 0.9;
-  }
-  /* file status color states */
-  .file-status-default { color: rgba(255,255,255,0.9); }
-  .file-status-selected { color: #a8ffb0; }
-/************* END FILE INPUT STYLE *****************/
-/************* BEGIN ADD PHOTO *****************/
-
-.add-photo-button {
-    background-color: rgba(0,0,255,0.1);
-    border-radius: 10px;
-    padding: 10px 16px;
- }
-/************* END ADD PHOTO *****************/
-/************* H1 STYLE *****************/
-  h1 { 
-    text-align:center; 
-    margin-bottom:20px; 
-    color: white;
-    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
-    
-}
-/************* END H1 STYLE *****************/
-/************* CONTROLS STYLE *****************/
-  .controls { 
-    max-width:720px; 
-    margin-top:20px auto 24px auto; 
-    margin-bottom: 20px;
-    display:flex; 
-    gap:12px; 
-    align-items:center; 
-    justify-content:center; 
-    flex-wrap:wrap; 
-}
-/************* END CONTROLS STYLE *****************/
-/************* CONTROLS INPUT STYLE *****************/
-   .controls input[type="file"] { 
-    padding:8px 10px; 
-    border-radius:8px; 
-    border:1px solid #a9a7b4; 
-    background: rgba(255,255,255,0.2); 
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
-}
-/************* END CONTROLS INPUT STYLE *****************/
-/************* CONTROLS BUTTON STYLE *****************/
-  .controls button {   /*ADD PHOTO BUTTON*/
-    padding:8px 14px; 
-    border-radius:8px; 
-    border:none; 
-    color:white; 
-    cursor:pointer; 
-    font-weight:600; 
-    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
-}
-  .controls button:active { 
-    transform:translateY(1px); 
-}
-/************* END CONTROLS BUTTON STYLE *****************/
-/************* ENTRIES STYLE *****************/
-  #entries { 
-    max-width:720px; 
-    margin:0 auto; 
-}
-/************* END ENTRIES STYLE *****************/
-/************* EMPTY STYLE *****************/
-  .empty { 
-    text-align:center; 
-    color:#666; 
-    padding:24px; 
-}
-/************* END EMPTY STYLE *****************/
-/************* BUTTON STYLE *****************/
-  button { 
-    font-family:inherit; 
-    background-color: rgba(255,255,255,.2);
-    color: "white";
-}
-/************* END BUTTON STYLE *****************/
-/************* NAV BAR STYLE *****************/
-.nav-bar {
-  display: flex;
-  justify-content: center;
-  gap: 20px;
-  flex-wrap: wrap;
-  max-width: fit-content;
-  margin: 0 auto 20px auto;
-  padding: 5px 20px;
-  border-radius: 12px;       /* rounded corners for the “window” */
-  background: rgba(255,255,255,0.1);
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
-}
-
-.nav-bar button {
-  background: #555;
-  color: white;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  opacity: 1;
-  transition: all 0.2s ease;
-  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
-}
-
-.nav-bar button:hover {
-  background: #777;
-}
-
-.nav-bar button.disabled {
-  opacity: 0.4;
-  cursor: default;
-}
-/************* END NAV BAR STYLE *****************/
-/************* PICTURE IN WINDOW STYLE *****************/
-.hidden {
-  display: none;
-}
-
-.image-viewer-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.7);
-  backdrop-filter: blur(10px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-}
-
-.image-viewer-overlay img {
-  max-width: 90vw;
-  max-height: 70vh;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
-  object-fit: contain;
-}
-
-#closeViewer {
-  position: absolute;
-  top: 20px;
-  right: 30px;
-  background: rgba(255,0,0,0.7);
-  border: none;
-  color: white;
-  font-size: 28px;
-  font-weight: bold;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  cursor: pointer;
-}
-
-.nav-btn {
-  background: rgba(255,255,255,0.2);
-  border: none;
-  color: white;
-  font-size: 32px;
-  border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  cursor: pointer;
-  margin: 0 20px;
-}
-
-#photoDescription {
-  margin-top: 20px;
-  width: 80%;
-  height: 80px;
-  border-radius: 8px;
-  border: none;
-  padding: 10px;
-  resize: none;
-  font-size: 14px;
-  background: rgba(255,255,255,0.8);
-  color: black;
-}
-/************* END PICTURE IN WINDOW STYLE *****************/
-
-/******************** END *****************************
- ******************* STYLE ***************************/
-
-</style>
+<link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
 <h1> 5 Year Journal Digified</h1>
@@ -1090,13 +834,8 @@ function showDayDetail(year, monthNum, dayNum) {
   years.forEach((y) => {
     const key = `${y}-${monthNum.padStart(2, '0')}-${dayNum.padStart(2, '0')}`;
 
-    const section = document.createElement('div');
-    section.className = 'year-section glassify';
-    section.style.padding = '10px';
-    section.style.minHeight = '280px';
-    section.style.display = 'flex';
-    section.style.flexDirection = 'column';
-    section.style.alignItems = 'stretch';
+  const section = document.createElement('div');
+  section.className = 'year-section glassify';
 
     // Year header
     const header = document.createElement('div');
@@ -1111,17 +850,12 @@ function showDayDetail(year, monthNum, dayNum) {
     // Weekday and weather selectors (inline controls in the header area)
     const weekdayButtons = [];
     const weatherButtons = [];
-    const selectorsRow = document.createElement('div');
-    selectorsRow.style.display = 'flex';
-    selectorsRow.style.justifyContent = 'space-between';
-    selectorsRow.style.alignItems = 'center';
-    selectorsRow.style.marginBottom = '8px';
+  const selectorsRow = document.createElement('div');
+  selectorsRow.className = 'selectors-row';
 
     // Weekday selector (S M T W Th F S)
-    const weekdayDiv = document.createElement('div');
-    weekdayDiv.style.display = 'flex';
-    weekdayDiv.style.gap = '6px';
-    weekdayDiv.style.alignItems = 'center';
+  const weekdayDiv = document.createElement('div');
+  weekdayDiv.className = 'weekday-div';
     const weekdayLabels = ['S','M','T','W','Th','F','S'];
     const weekdayTitles = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
     weekdayLabels.forEach((lbl, idx) => {
@@ -1157,10 +891,8 @@ function showDayDetail(year, monthNum, dayNum) {
     });
 
     // Weather selector (5 options)
-    const weatherDiv = document.createElement('div');
-    weatherDiv.style.display = 'flex';
-    weatherDiv.style.gap = '6px';
-    weatherDiv.style.alignItems = 'center';
+  const weatherDiv = document.createElement('div');
+  weatherDiv.className = 'weather-div';
     const weatherOptions = [
       { key: 'sunny', label: '☀️', title: 'Sunny' },
       { key: 'partly', label: '⛅', title: 'Partly Cloudy' },
@@ -1205,82 +937,55 @@ function showDayDetail(year, monthNum, dayNum) {
   // Photos container: fixed height horizontal scroller so adding many images
   // doesn't push layout around. Users can scroll horizontally to see more.
   const photosDivY = document.createElement('div');
-  photosDivY.style.display = 'flex';
-  photosDivY.style.flexWrap = 'nowrap';
-  photosDivY.style.gap = '8px';
-  photosDivY.style.overflowX = 'auto';
-  photosDivY.style.overflowY = 'hidden';
-  photosDivY.style.height = '110px';
-  photosDivY.style.alignItems = 'center';
-  photosDivY.style.marginBottom = '8px';
-  photosDivY.style.padding = '6px';
-  photosDivY.style.background = 'rgba(255,255,255,0.03)';
-  photosDivY.style.borderRadius = '6px';
+  photosDivY.className = 'photos-row';
   section.appendChild(photosDivY);
 
   // Small loading/status and image count badge
   const loadingY = document.createElement('div');
-  loadingY.style.fontSize = '12px';
-  loadingY.style.minHeight = '18px';
-  loadingY.style.marginBottom = '6px';
+  loadingY.className = 'loading-y';
   section.appendChild(loadingY);
 
   const countBadge = document.createElement('div');
-  countBadge.style.position = 'absolute';
-  countBadge.style.right = '12px';
-  countBadge.style.top = '8px';
-  countBadge.style.background = 'rgba(0,0,0,0.5)';
-  countBadge.style.color = 'white';
-  countBadge.style.padding = '4px 8px';
-  countBadge.style.borderRadius = '12px';
-  countBadge.style.fontSize = '12px';
+  countBadge.className = 'count-badge';
   countBadge.textContent = '';
   // place badge inside section visually by making header container relative
   section.style.position = 'relative';
   section.appendChild(countBadge);
 
     // Journal area
-    const journalY = document.createElement('textarea');
-    journalY.placeholder = 'Write your journal entry here...';
-    journalY.style.width = '100%';
-    journalY.style.height = '90px';
-    journalY.classList.add('glassify');
-    journalY.style.marginTop = '8px';
-    section.appendChild(journalY);
+  const journalY = document.createElement('textarea');
+  journalY.placeholder = 'Write your journal entry here...';
+  journalY.classList.add('glassify', 'journal-textarea');
+  section.appendChild(journalY);
 
     // Add / Delete controls
-    const controls = document.createElement('div');
-    controls.style.display = 'flex';
-    controls.style.justifyContent = 'center';
-    controls.style.gap = '8px';
-    controls.style.marginTop = '8px';
+  const controls = document.createElement('div');
+  controls.className = 'year-controls';
 
-    const addBtnY = document.createElement('button');
-    addBtnY.textContent = 'Add Photo';
-    addBtnY.className = 'glassify';
+  const addBtnY = document.createElement('button');
+  addBtnY.textContent = 'Add Photo';
+  addBtnY.className = 'glassify add-photo-button';
     controls.appendChild(addBtnY);
 
   const fileStatusY = document.createElement('div');
   fileStatusY.textContent = 'No photo selected';
-  fileStatusY.className = 'file-status-default';
-  fileStatusY.style.fontSize = '12px';
-  fileStatusY.style.alignSelf = 'center';
+  fileStatusY.className = 'file-status file-status-default';
   controls.appendChild(fileStatusY);
 
-    const deleteBtnY = document.createElement('button');
-    deleteBtnY.textContent = 'Delete Selected';
-    deleteBtnY.className = 'glassify';
+  const deleteBtnY = document.createElement('button');
+  deleteBtnY.textContent = 'Delete Selected';
+  deleteBtnY.className = 'glassify';
     controls.appendChild(deleteBtnY);
 
     section.appendChild(controls);
 
     // Create a unique hidden file input per year
-    const fileInputY = document.createElement('input');
-    fileInputY.type = 'file';
-    fileInputY.accept = 'image/*';
-    fileInputY.multiple = true;
-    fileInputY.style.display = 'none';
-    document.body.appendChild(fileInputY);
+  const fileInputY = document.createElement('input');
+  fileInputY.type = 'file';
+  fileInputY.accept = 'image/*';
+  fileInputY.multiple = true;
+  fileInputY.className = 'file-input';
+  document.body.appendChild(fileInputY);
 
     // helper to update the small fileStatusY
     function updateLocalFileStatus(el) {
@@ -1371,21 +1076,15 @@ function showDayDetail(year, monthNum, dayNum) {
       const thumbUrls = [];
       for (const r of rows) {
         const photoContainer = document.createElement('div');
-        photoContainer.style.position = 'relative';
-        photoContainer.style.display = 'inline-block';
+        photoContainer.className = 'photo-container';
         photoContainer.setAttribute('data-photo-id', r.id);
 
         const checkbox = document.createElement('input');
         checkbox.type = 'checkbox';
-        checkbox.style.position = 'absolute';
-        checkbox.style.top = '4px';
-        checkbox.style.left = '4px';
-        checkbox.style.width = '20px';
-        checkbox.style.height = '20px';
-        checkbox.style.cursor = 'pointer';
         photoContainer.appendChild(checkbox);
 
         const img = document.createElement('img');
+        img.className = 'thumb';
         try {
           const rec = await getPhotoRecordById(r.id);
           if (rec && rec.blob) {
@@ -1395,11 +1094,6 @@ function showDayDetail(year, monthNum, dayNum) {
           } else img.src = '';
         } catch (e) { img.src = ''; }
         img.alt = `Photo for ${key}`;
-        img.style.width = '100px';
-        img.style.height = '100px';
-        img.style.objectFit = 'cover';
-        img.style.borderRadius = '6px';
-        img.style.boxShadow = '2px 2px 6px rgba(0,0,0,0.5)';
         photoContainer.appendChild(img);
 
         photosDivY.appendChild(photoContainer);

@@ -1,0 +1,127 @@
+/* Moved styles from index.html and added responsive rules */
+/* Global box-sizing / reset */
+*, *::before, *::after { box-sizing: border-box; }
+html,body { height: 100%; }
+
+/* ===== GLASSIFY ===== */
+.glassify {
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  border:1px solid rgba(255,255,255,0.4);
+  box-shadow: 5px 5px 10px rgba(0,0,0,0.7);
+}
+.glassify:hover { background: rgba(255,255,255,.5); transform: translateY(-2px); }
+textarea.glassify {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.4);
+  box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
+  color: white;
+}
+.glassify button{ cursor:pointer; }
+
+/* ===== BODY ===== */
+body {
+  font-family: 'Times New Roman', Times, serif;
+  background: url("Background Image.png");
+  background-size: cover;
+  background-position: center;
+  /* background-attachment: fixed can cause issues on mobile; switch to scroll for better performance */
+  background-attachment: scroll;
+  margin:0; padding:10px 20px; color:#222;
+}
+body::before {
+  content: ""; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1;
+}
+
+/* ===== File input / controls ===== */
+.file-input { display: none; }
+.file-label {
+  display: inline-block; padding: 10px 16px; border-radius: 10px;
+  background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer;
+  transition: background 0.2s ease;
+}
+.file-label:hover { background: rgba(0,12,255,0.6); }
+.file-status-default { color: rgba(255,255,255,0.9); }
+.file-status-selected { color: #a8ffb0; }
+
+.add-photo-button { background-color: rgba(0,0,255,0.1); border-radius: 10px; padding: 10px 16px; }
+
+h1 { text-align:center; margin-bottom:20px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); }
+
+.controls { max-width:1100px; margin:20px auto; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
+.controls input[type="file"] { padding:8px 10px; border-radius:8px; border:1px solid #a9a7b4; background: rgba(255,255,255,0.2); }
+.controls button { padding:8px 14px; border-radius:8px; border:none; color:white; cursor:pointer; font-weight:600; box-shadow: 5px 5px 10px rgba(0,0,0,0.5); }
+
+#entries { max-width:1100px; margin:0 auto; }
+.empty { text-align:center; color:#666; padding:24px; }
+
+button { font-family:inherit; background-color: rgba(255,255,255,.2); color: white; }
+
+.nav-bar { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; max-width: fit-content; margin: 0 auto 20px auto; padding: 5px 20px; border-radius: 12px; background: rgba(255,255,255,0.1); box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5); }
+.nav-bar button { background: #555; color: white; padding: 6px 12px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; opacity: 1; transition: all 0.2s ease; box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); }
+.nav-bar button:hover { background: #777; }
+.nav-bar button.disabled { opacity: 0.4; cursor: default; }
+
+/* Image viewer overlay */
+.image-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display:flex; align-items:center; justify-content:center; z-index: 999; }
+.image-viewer-overlay img { max-width: 90vw; max-height: 70vh; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: contain; }
+#closeViewer { position: absolute; top: 20px; right: 30px; background: rgba(255,0,0,0.7); border: none; color: white; font-size: 28px; font-weight: bold; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
+.nav-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 32px; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; margin: 0 20px; }
+
+#photoDescription { margin-top: 20px; width: 80%; height: 80px; border-radius: 8px; border: none; padding: 10px; resize: none; font-size: 14px; background: rgba(255,255,255,0.8); color: black; }
+
+/* Year section and child elements (moved from JS explicit inline styles) */
+.year-section { padding: 10px; min-height: 220px; display:flex; flex-direction:column; align-items:stretch; position: relative; background: rgba(255,255,255,0.02); border-radius: 8px; }
+.year-section .header { font-size: 18px; color: rgba(200,200,200,1); font-weight:700; margin-bottom:8px; text-align:center; }
+.selectors-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
+.weekday-div, .weather-div { display:flex; gap:6px; align-items:center; }
+.weekday-div button, .weather-div button { padding:6px 8px; color:white; border-radius:6px; font-size:12px; }
+
+.photos-row { display:flex; flex-wrap:nowrap; gap:8px; overflow-x:auto; overflow-y:hidden; height:110px; align-items:center; margin-bottom:8px; padding:6px; background: rgba(255,255,255,0.03); border-radius:6px; }
+.photo-container { position:relative; display:inline-block; }
+.photo-container input[type=checkbox] { position:absolute; top:4px; left:4px; width:20px; height:20px; cursor:pointer; }
+.thumb { width:100px; height:100px; object-fit:cover; border-radius:6px; box-shadow:2px 2px 6px rgba(0,0,0,0.5); }
+
+.count-badge { position:absolute; right:12px; top:8px; background: rgba(0,0,0,0.5); color:white; padding:4px 8px; border-radius:12px; font-size:12px; }
+.journal-textarea { width:100%; height:90px; margin-top:8px; }
+.year-controls { display:flex; justify-content:center; gap:8px; margin-top:8px; }
+.file-status { font-size:12px; align-self:center; }
+
+/* Loading/status style */
+.loading-y { font-size:12px; min-height:18px; margin-bottom:6px; }
+
+/* Toasts and trackers */
+#quotaToast, #saveToast { position: fixed; left: 50%; transform: translateX(-50%); border-radius:8px; font-weight:600; z-index:1000; }
+#quotaToast { bottom:20px; background: rgba(255,50,50,0.9); color:white; padding:12px 20px; opacity:0; transition:opacity 0.5s; }
+#saveToast { bottom:60px; background: rgba(40,180,40,0.95); color:white; padding:10px 16px; opacity:0; transition:opacity 0.25s ease; }
+
+#storageTracker { position: fixed; bottom:4px; right:4px; font-size:10px; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius:4px; z-index:1000; }
+
+/* ===== Responsive tweaks ===== */
+@media (max-width: 900px) {
+  .controls { padding: 6px; }
+  .thumb { width:84px; height:84px; }
+  .photos-row { height:90px; }
+}
+
+@media (max-width: 600px) {
+  body { padding: 8px 10px; }
+  .nav-btn { width:44px; height:44px; font-size:20px; }
+  .nav-bar { gap:8px; padding:6px 10px; }
+  .thumb { width:64px; height:64px; }
+  .photos-row { height:76px; }
+  .year-section { min-height: auto; padding:8px; }
+  /* day grid will fall back to fewer columns */
+  .day-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  #photoDescription { width: 92%; height: 64px; }
+}
+
+@media (max-width: 420px) {
+  .controls { flex-direction: column; gap:8px; }
+  .thumb { width:56px; height:56px; }
+  .nav-btn { margin: 0 8px; }
+  .day-grid { grid-template-columns: repeat(2, 1fr) !important; }
+}
+
+/* helper: allow JS to toggle hidden class */
+.hidden { display: none !important; }
