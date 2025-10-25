@@ -8,267 +8,1559 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Photo Journal</title>
 <style>
-  /* --- Body & basic typography --- */
-  body { 
-    font-family: Arial, sans-serif; 
-    background: #f0f2f5; 
-    margin:0; padding:32px; 
-    color:#222; 
-  }
-  h1 { text-align:center; margin-bottom:20px; font-size:1.8em; }
-
-  /* --- Navigation Bar --- */
-  #navContainer {
-    width: 100%;
-    display: flex; justify-content: center; margin-bottom: 20px;
-  }
-  .nav-bar {
-    display: flex; justify-content: center; flex-wrap: wrap;
-    gap: 10px; background: #e0e4e8;
-    padding: 10px 20px; border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    max-width: fit-content;
-  }
-  .nav-bar button {
-    padding: 8px 14px;
-    border-radius: 8px;
-    border: none;
-    background: #2d8cff;
+/************* GLASSIFY *****************/
+.glassify {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.7);
+}
+.glassify:hover {
+    background: rgba(255,255,255,.5);
+    transform: translateY(-2px);
+}
+textarea.glassify {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.4);
+    box-shadow: 5px 5px 5px rgba(0,0,0,0.5);
     color: white;
-    cursor: pointer;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+textarea.glassify:hover {
+    background: rgba(255,255,255,0.1);
+    transform: translateY(-2px);
+}
+/************* END GLASSIFY *****************/
+/************* BODY STYLE *****************/
+  body { 
+    font-family: 'Times New Roman', Times, serif; 
+    background: url("Background Image.png"); 
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+    margin:0; 
+    padding:10px 20px; 
+    color:#222; 
+}
+  body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: -1;
+  }
+
+/************* END BODY STYLE *****************/
+/************* FILE INPUT STYLE *****************/
+  .file-input {
+    display: none;
+  }
+
+  .file-label {
+    display: inline-block;
+    padding: 10px 16px;
+    border-radius: 10px;
+    background: rgba(255,255,255,0.2);
+    color: white;
     font-weight: 600;
-    min-width: 60px;
-  }
-  .nav-bar button.disabled { 
-    background: #a0b0c0; cursor: not-allowed; 
+    cursor: pointer;
+    transition: background 0.2s ease;
   }
 
-  /* --- Controls (date/photo input) --- */
-  .controls {
-    max-width:720px; margin:0 auto 24px auto; 
-    display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap;
-  }
-  .controls input[type="date"], .controls input[type="file"] {
-    padding:8px 10px; border-radius:8px; border:1px solid #ddd; background:white; width: 150px;
-  }
-  .controls button { 
-    padding:8px 14px; border-radius:8px; border:none; background:#2d8cff; color:white; cursor:pointer; font-weight:600; 
+  .file-label:hover {
+    background: rgba(0,12,255,0.6);
   }
 
-  /* --- Entries --- */
-  #entries { max-width:720px; margin:0 auto; }
-  .empty { text-align:center; color:#666; padding:24px; }
+  #fileStatus {
+    margin-left: 12px;
+    font-size: 0.9em;
+    color: rgba(255,255,255,1);
+    font-style: italic;
+    transition: color 0.3s ease, opacity 0.3s ease;
+    opacity: 0.9;
+  }
+  /* file status color states */
+  .file-status-default { color: rgba(255,255,255,0.9); }
+  .file-status-selected { color: #a8ffb0; }
+/************* END FILE INPUT STYLE *****************/
+/************* BEGIN ADD PHOTO *****************/
 
-  /* --- Day Grid --- */
-  .day-grid {
-    display:grid;
-    grid-template-columns: repeat(auto-fit, minmax(40px,1fr));
-    gap:8px;
-    justify-items:center;
+.add-photo-button {
+    background-color: rgba(0,0,255,0.1);
+    border-radius: 10px;
+    padding: 10px 16px;
+ }
+/************* END ADD PHOTO *****************/
+/************* H1 STYLE *****************/
+  h1 { 
+    text-align:center; 
+    margin-bottom:20px; 
+    color: white;
+    text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
+    
+}
+/************* END H1 STYLE *****************/
+/************* CONTROLS STYLE *****************/
+  .controls { 
+    max-width:720px; 
+    margin-top:20px auto 24px auto; 
     margin-bottom: 20px;
-  }
+    display:flex; 
+    gap:12px; 
+    align-items:center; 
+    justify-content:center; 
+    flex-wrap:wrap; 
+}
+/************* END CONTROLS STYLE *****************/
+/************* CONTROLS INPUT STYLE *****************/
+   .controls input[type="file"] { 
+    padding:8px 10px; 
+    border-radius:8px; 
+    border:1px solid #a9a7b4; 
+    background: rgba(255,255,255,0.2); 
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+}
+/************* END CONTROLS INPUT STYLE *****************/
+/************* CONTROLS BUTTON STYLE *****************/
+  .controls button {   /*ADD PHOTO BUTTON*/
+    padding:8px 14px; 
+    border-radius:8px; 
+    border:none; 
+    color:white; 
+    cursor:pointer; 
+    font-weight:600; 
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.5);
+}
+  .controls button:active { 
+    transform:translateY(1px); 
+}
+/************* END CONTROLS BUTTON STYLE *****************/
+/************* ENTRIES STYLE *****************/
+  #entries { 
+    max-width:720px; 
+    margin:0 auto; 
+}
+/************* END ENTRIES STYLE *****************/
+/************* EMPTY STYLE *****************/
+  .empty { 
+    text-align:center; 
+    color:#666; 
+    padding:24px; 
+}
+/************* END EMPTY STYLE *****************/
+/************* BUTTON STYLE *****************/
+  button { 
+    font-family:inherit; 
+    background-color: rgba(255,255,255,.2);
+    color: "white";
+}
+/************* END BUTTON STYLE *****************/
+/************* NAV BAR STYLE *****************/
+.nav-bar {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  max-width: fit-content;
+  margin: 0 auto 20px auto;
+  padding: 5px 20px;
+  border-radius: 12px;       /* rounded corners for the “window” */
+  background: rgba(255,255,255,0.1);
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+}
 
-  /* --- Photos --- */
-  .photo-container {
-    display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-bottom:20px;
-  }
-  .photo-container img {
-    width: calc(25vw - 10px); height: calc(25vw - 10px);
-    max-width: 120px; max-height: 120px;
-    object-fit: cover; border-radius: 8px; cursor: pointer;
-  }
+.nav-bar button {
+  background: #555;
+  color: white;
+  padding: 6px 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 500;
+  opacity: 1;
+  transition: all 0.2s ease;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
 
-  /* --- Journal Textarea --- */
-  textarea {
-    width: 100%; max-width:720px; height:120px; margin-bottom:16px;
-    padding:10px; border-radius:8px; border:1px solid #ccc;
-  }
+.nav-bar button:hover {
+  background: #777;
+}
 
-  /* --- Buttons --- */
-  button { font-family:inherit; }
+.nav-bar button.disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+/************* END NAV BAR STYLE *****************/
+/************* PICTURE IN WINDOW STYLE *****************/
+.hidden {
+  display: none;
+}
 
-  /* --- Responsive tweaks for small screens --- */
-  @media (max-width: 500px) {
-    .nav-bar { flex-direction: column; padding: 8px; }
-    .controls { flex-direction: column; gap:8px; }
-    .controls input[type="date"], .controls input[type="file"] { width: 100%; }
-  }
+.image-viewer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+}
+
+.image-viewer-overlay img {
+  max-width: 90vw;
+  max-height: 70vh;
+  border-radius: 12px;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  object-fit: contain;
+}
+
+#closeViewer {
+  position: absolute;
+  top: 20px;
+  right: 30px;
+  background: rgba(255,0,0,0.7);
+  border: none;
+  color: white;
+  font-size: 28px;
+  font-weight: bold;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+}
+
+.nav-btn {
+  background: rgba(255,255,255,0.2);
+  border: none;
+  color: white;
+  font-size: 32px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: pointer;
+  margin: 0 20px;
+}
+
+#photoDescription {
+  margin-top: 20px;
+  width: 80%;
+  height: 80px;
+  border-radius: 8px;
+  border: none;
+  padding: 10px;
+  resize: none;
+  font-size: 14px;
+  background: rgba(255,255,255,0.8);
+  color: black;
+}
+/************* END PICTURE IN WINDOW STYLE *****************/
+
+/******************** END *****************************
+ ******************* STYLE ***************************/
 
 </style>
 </head>
 <body>
+<h1> 5 Year Journal Digified</h1>
 
-<h1>📸 My Photo Journal</h1>
-
-<!-- Navigation Bar -->
-<div id="navContainer"></div>
-
-<!-- Controls -->
 <div class="controls">
-  <input id="dateInput" type="date" required>
-  <input id="photoInput" type="file" accept="image/*" required>
-  <button id="addBtn">Add Photo</button>
+    <label for="photoInput" id="selectUploadLabel" class="file-label glassify">Select & Upload</label>
+    <input id="photoInput" type="file" accept="image/*" class="file-input" multiple required>
+    <input id="targetDate" type="date" class="glassify" style="margin-left:12px; padding:6px; border-radius:6px;" title="Target date for uploads">
 </div>
 
 <div id="entries">
   <div id="emptyMsg" class="empty" style="display:none;">No photos yet. Add a photo using the controls above.</div>
 </div>
 
+<!--- -- Fullscreen Image Viewer ----------->
+<div id="imageViewer" class="hidden">
+  <div class="image-viewer-overlay glass">
+    <button id="closeViewer">&times;</button>
+    <button id="prevImage" class="nav-btn">&#8592;</button>
+    <div id="imageViewerContent">
+      <img id="viewerImage" src="" alt="Photo" />
+      <textarea id="photoDescription" placeholder="Add a description..."></textarea>
+    </div>
+    <button id="nextImage" class="nav-btn">&#8594;</button>
+  </div>
+</div>
+
+<!-- Multi-delete confirmation modal -->
+<div id="deleteModal" class="hidden">
+  <div class="image-viewer-overlay glass">
+    <div style="background: rgba(30,30,30,0.9); padding: 20px; border-radius: 12px; max-width: 400px; text-align:center; color:white;">
+      <p id="deleteModalText">Delete selected photos?</p>
+      <div style="margin-top: 20px; display:flex; justify-content:center; gap:10px;">
+        <button id="deleteConfirm" class="glassify" style="padding:8px 16px;">Delete</button>
+        <button id="deleteCancel" class="glassify" style="padding:8px 16px;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Quota Exceeded Toast -->
+<div id="quotaToast" style="
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255,50,50,0.9);
+  color: white;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.5s;
+  pointer-events: none;
+  z-index: 1000;
+">
+  Storage quota exceeded!
+</div>
+
+<!-- Save confirmation toast -->
+<div id="saveToast" style="
+  position: fixed;
+  bottom: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(40,180,40,0.95);
+  color: white;
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+  z-index: 1000;
+">
+  Saved ✓
+</div>
+
+<div id="storageTracker" style="
+    position: fixed;
+    bottom: 4px;
+    right: 4px;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    background: rgba(0,0,0,0.3);
+    padding: 2px 6px;
+    border-radius: 4px;
+    z-index: 1000;
+">
+  Storage: 0%
+</div>
+
+<button onclick="downloadBackup()" style="position: fixed; bottom: 10px; right: 10px; font-size: 12px; opacity: 0.6;">
+  💾 Backup
+</button>
+
+<input type="file" id="backupInput" accept=".json" style="display: none;" />
+
+<button id="importBtn" style="
+    position: fixed; bottom: 10px; right: 80px; 
+    font-size: 12px; opacity: 0.6; z-index:1000;
+">
+  📂 Import
+</button>
+
+
+
 <script>
 let photoEntries = JSON.parse(localStorage.getItem("photoEntries")) || {};
 let currentDayKey = null;
-let currentView = "year";
-let currentYear = null;
-let currentMonth = null;
 
-const dateInput = document.getElementById("dateInput");
+// ------------- PHOTO WINDOW STUFF --------------------------
+let currentPhotos = [];
+let currentPhotoIndex = 0;
+let currentKey = null;
+let db = null; // IndexedDB instance
+
+// ---------- IndexedDB wrapper (PhotoJournalDB) ----------
+function openIDB() {
+  return new Promise((resolve, reject) => {
+    const req = indexedDB.open('PhotoJournalDB', 1);
+    req.onupgradeneeded = (ev) => {
+      const idb = ev.target.result;
+      if (!idb.objectStoreNames.contains('photos')) {
+        const s = idb.createObjectStore('photos', { keyPath: 'id', autoIncrement: true });
+        s.createIndex('day', 'day', { unique: false });
+      }
+      if (!idb.objectStoreNames.contains('entries')) {
+        idb.createObjectStore('entries', { keyPath: 'day' });
+      }
+    };
+    req.onsuccess = () => resolve(req.result);
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function addPhotoToIDB(day, fileBlob, filename) {
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error('DB not open'));
+    const tx = db.transaction('photos', 'readwrite');
+    const store = tx.objectStore('photos');
+    const rec = { day, blob: fileBlob, filename: filename || '', createdAt: Date.now() };
+    const r = store.add(rec);
+    r.onsuccess = () => resolve(r.result);
+    r.onerror = () => reject(r.error);
+  });
+}
+
+function getPhotosFromIDB(day) {
+  return new Promise((resolve, reject) => {
+    if (!db) return resolve([]);
+    const tx = db.transaction('photos', 'readonly');
+    const store = tx.objectStore('photos');
+    const idx = store.index('day');
+    const range = IDBKeyRange.only(day);
+    const req = idx.openCursor(range);
+    const out = [];
+    req.onsuccess = (ev) => {
+      const cur = ev.target.result;
+      if (cur) {
+        // map to a predictable record shape to avoid relying on internal structured clone quirks
+        const v = cur.value || {};
+        out.push({ id: v.id, day: v.day, blob: v.blob, filename: v.filename, createdAt: v.createdAt });
+        cur.continue();
+      } else {
+        resolve(out);
+      }
+    };
+    req.onerror = () => reject(req.error);
+  });
+}
+
+function getPhotoRecordById(id) {
+  return new Promise((resolve, reject) => {
+    if (!db) return resolve(null);
+    try {
+      const tx = db.transaction('photos', 'readonly');
+      const store = tx.objectStore('photos');
+      const r = store.get(id);
+      r.onsuccess = () => resolve(r.result || null);
+      r.onerror = () => reject(r.error);
+    } catch (e) { resolve(null); }
+  });
+}
+
+function deletePhotoFromIDB(id) {
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error('DB not open'));
+    const tx = db.transaction('photos', 'readwrite');
+    const store = tx.objectStore('photos');
+    const r = store.delete(id);
+    r.onsuccess = () => resolve();
+    r.onerror = () => reject(r.error);
+  });
+}
+
+function saveEntryMetaIDB(day, meta) {
+  return new Promise((resolve, reject) => {
+    if (!db) return reject(new Error('DB not open'));
+    const tx = db.transaction('entries', 'readwrite');
+    const store = tx.objectStore('entries');
+    const rec = Object.assign({ day }, meta);
+    const r = store.put(rec);
+    r.onsuccess = () => resolve();
+    r.onerror = () => reject(r.error);
+  });
+}
+
+function getEntryMetaIDB(day) {
+  return new Promise((resolve, reject) => {
+    if (!db) return resolve({ journal: '', descriptions: {} });
+    const tx = db.transaction('entries', 'readonly');
+    const store = tx.objectStore('entries');
+    const r = store.get(day);
+    r.onsuccess = () => resolve(r.result || { journal: '', descriptions: {} });
+    r.onerror = () => reject(r.error);
+  });
+}
+
+async function migrateFromLocalStorage() {
+  try {
+    if (!db) return;
+    if (localStorage.getItem('pj_migrated_to_idb')) return; // already migrated
+    const raw = localStorage.getItem('photoEntries');
+    if (!raw) return;
+    const obj = JSON.parse(raw);
+    for (const day of Object.keys(obj)) {
+      const entry = obj[day];
+      const meta = { journal: entry.journal || '', descriptions: {} };
+      if (Array.isArray(entry.photos)) {
+        for (const dataUrl of entry.photos) {
+          try {
+            const blob = await (await fetch(dataUrl)).blob();
+            const id = await addPhotoToIDB(day, blob);
+            if (entry.descriptions && entry.descriptions[dataUrl]) {
+              meta.descriptions[id] = entry.descriptions[dataUrl];
+            }
+          } catch (err) {
+            console.warn('migrate photo failed', err);
+          }
+        }
+      }
+      await saveEntryMetaIDB(day, meta);
+    }
+    localStorage.setItem('pj_migrated_to_idb', '1');
+  } catch (err) {
+    console.error('Migration to IndexedDB failed', err);
+  }
+}
+
+function openImageViewer(photos, index, key) {
+  // photos: array of { id, blob, filename, createdAt }
+  currentPhotos = photos;
+  currentPhotoIndex = index;
+  currentKey = key;
+
+  const viewer = document.getElementById("imageViewer");
+  const viewerImage = document.getElementById("viewerImage");
+  const photoDescription = document.getElementById("photoDescription");
+
+  // revoke any previous viewer URL
+  if (viewerImage._currentUrl) {
+    try { URL.revokeObjectURL(viewerImage._currentUrl); } catch (e) {}
+    viewerImage._currentUrl = null;
+  }
+
+  const cur = photos[index];
+  if (cur && cur.blob) {
+    const vUrl = URL.createObjectURL(cur.blob);
+    viewerImage.src = vUrl;
+    viewerImage._currentUrl = vUrl;
+  } else {
+    viewerImage.src = '';
+  }
+
+  // load description from IDB meta
+  (async () => {
+    const meta = await getEntryMetaIDB(key);
+    photoDescription.value = meta.descriptions?.[cur?.id] || "";
+  })();
+
+  viewer.classList.remove("hidden");
+}
+
+function closeImageViewer() {
+  const viewerImage = document.getElementById("viewerImage");
+  if (viewerImage && viewerImage._currentUrl) {
+    try { URL.revokeObjectURL(viewerImage._currentUrl); } catch (e) {}
+    viewerImage._currentUrl = null;
+  }
+  document.getElementById("imageViewer").classList.add("hidden");
+}
+
+function showNextImage() {
+  if (currentPhotos.length === 0) return;
+  currentPhotoIndex = (currentPhotoIndex + 1) % currentPhotos.length;
+  updateViewerImage();
+}
+
+function showPrevImage() {
+  if (currentPhotos.length === 0) return;
+  currentPhotoIndex = (currentPhotoIndex - 1 + currentPhotos.length) % currentPhotos.length;
+  updateViewerImage();
+}
+
+function updateViewerImage() {
+  const viewerImage = document.getElementById("viewerImage");
+  const photoDescription = document.getElementById("photoDescription");
+  const current = currentPhotos[currentPhotoIndex];
+  // revoke previous viewer URL and create a new one from blob
+  if (viewerImage._currentUrl) {
+    try { URL.revokeObjectURL(viewerImage._currentUrl); } catch (e) {}
+    viewerImage._currentUrl = null;
+  }
+  if (current && current.blob) {
+    const vUrl = URL.createObjectURL(current.blob);
+    viewerImage.src = vUrl;
+    viewerImage._currentUrl = vUrl;
+  } else {
+    viewerImage.src = '';
+  }
+  (async () => {
+    const meta = await getEntryMetaIDB(currentKey);
+    photoDescription.value = meta.descriptions?.[current.id] || "";
+  })();
+}
+
+// Save description edits
+document.getElementById("photoDescription").addEventListener("input", e => {
+  const text = e.target.value;
+  const current = currentPhotos[currentPhotoIndex];
+  (async () => {
+    try {
+      const meta = await getEntryMetaIDB(currentKey);
+      if (!meta.descriptions) meta.descriptions = {};
+      meta.descriptions[current.id] = text;
+      await saveEntryMetaIDB(currentKey, meta);
+      updateStorageTracker();
+    } catch (err) {
+      console.error('save description failed', err);
+    }
+  })();
+});
+
+// Button listeners
+document.getElementById("closeViewer").addEventListener("click", closeImageViewer);
+document.getElementById("nextImage").addEventListener("click", showNextImage);
+document.getElementById("prevImage").addEventListener("click", showPrevImage);
+
+// -------------  END PHOTO WINDOW STUFF --------------------------
+
 const photoInput = document.getElementById("photoInput");
+const fileStatus = document.getElementById("fileStatus");
 const addBtn = document.getElementById("addBtn");
 const entriesDiv = document.getElementById("entries");
 const emptyMsg = document.getElementById("emptyMsg");
+const targetDateInput = document.getElementById('targetDate');
 
-// --- Storage ---
-function persist() { localStorage.setItem("photoEntries", JSON.stringify(photoEntries)); }
-function refreshEmptyMessage() { emptyMsg.style.display = Object.keys(photoEntries).length>0 ? "none" : "block"; }
+function updateStorageTracker() {
+    const tracker = document.getElementById("storageTracker");
+    if(!tracker) return;
 
-// --- NAVIGATION BAR ---
+    try {
+        const lsBytes = new Blob([JSON.stringify(localStorage)]).size;
+        if (db) {
+          // include IDB bytes estimate
+          getIndexedDBUsageBytes().then(idbBytes => {
+            try {
+              const total = lsBytes + (idbBytes || 0);
+              const max = 100 * 1024 * 1024; // display-only heuristic
+              const percent = Math.min(100, Math.round((total / max)*100));
+              tracker.textContent = `Storage: ${percent}%`;
+            } catch (e) { tracker.textContent = 'Storage: N/A'; }
+          }).catch(() => { tracker.textContent = 'Storage: N/A'; });
+        } else {
+          const max = 5 * 1024 * 1024;
+          const percent = Math.min(100, Math.round((lsBytes / max)*100));
+          tracker.textContent = `Storage: ${percent}%`;
+        }
+    } catch (e) {
+        tracker.textContent = "Storage: N/A";
+        console.error("Storage tracking failed", e);
+    }
+}
+
+function updateFileStatus(inputEl) {
+  try {
+    const el = inputEl || document.getElementById('photoInput');
+    const status = document.getElementById('fileStatus');
+    if (!el || !status) return;
+    const count = el.files ? el.files.length : 0;
+    if (count === 0) {
+      status.textContent = 'No photo selected';
+      status.classList.remove('file-status-selected');
+      status.classList.add('file-status-default');
+    } else {
+      status.textContent = `${count} photo${count > 1 ? 's' : ''} selected`;
+      status.classList.remove('file-status-default');
+      status.classList.add('file-status-selected');
+    }
+  } catch (e) { /* ignore */ }
+}
+
+// attach to the static input if present
+// Top control: when files are chosen, immediately upload them to the selected date
+if (photoInput) photoInput.addEventListener('change', async (e) => {
+  const files = Array.from(e.target.files || []);
+  if (!files.length) return;
+
+  // determine target day key: prefer explicit date input, then currentDayKey, then today
+  let dayKey = null;
+  try {
+    if (targetDateInput && targetDateInput.value) {
+      const d = new Date(targetDateInput.value);
+      if (!isNaN(d)) {
+        const y = d.getFullYear().toString();
+        const m = (d.getMonth() + 1).toString().padStart(2, '0');
+        const dd = d.getDate().toString().padStart(2, '0');
+        dayKey = `${y}-${m}-${dd}`;
+      }
+    }
+  } catch (err) { dayKey = null; }
+  if (!dayKey) dayKey = currentDayKey || (new Date()).toISOString().split('T')[0];
+
+  // visual feedback on the label
+  const label = document.getElementById('selectUploadLabel');
+  const origLabel = label ? label.textContent : null;
+  if (label) label.textContent = `Uploading ${files.length}...`;
+
+  try {
+    for (const f of files) {
+      await addPhotoToIDB(dayKey, f, f.name);
+    }
+    await getIndexedDBUsageBytes();
+    updateStorageTracker();
+    if (label) label.textContent = `Uploaded ${files.length}`;
+
+    // If currently viewing the same day, re-render DayDetail
+    if (currentDayKey && currentDayKey === dayKey) {
+      const parts = dayKey.split('-');
+      if (parts.length === 3) showDayDetail(parts[0], parts[1], parts[2]);
+    }
+  } catch (err) {
+    console.error('Auto upload failed', err);
+    if (label) label.textContent = 'Upload failed';
+    alert('Failed to save photos: ' + (err && err.message ? err.message : 'Unknown'));
+  } finally {
+    // reset file input so selecting same files again fires change
+    e.target.value = '';
+    setTimeout(() => { if (label) label.textContent = origLabel || 'Select & Upload'; }, 800);
+  }
+});
+
+// estimate IndexedDB used bytes by summing photo blob sizes
+function getIndexedDBUsageBytes() {
+  return new Promise((resolve) => {
+    if (!db) return resolve(0);
+    try {
+      let total = 0;
+      const tx = db.transaction('photos', 'readonly');
+      const store = tx.objectStore('photos');
+      const req = store.openCursor();
+      req.onsuccess = (ev) => {
+        const cur = ev.target.result;
+        if (cur) {
+          const b = cur.value && cur.value.blob;
+          if (b && typeof b.size === 'number') total += b.size;
+          cur.continue();
+        } else resolve(total);
+      };
+      req.onerror = () => resolve(0);
+    } catch (e) { resolve(0); }
+  });
+}
+
+function persist() {
+    const toast = document.getElementById("saveToast");
+    // show immediate saving UI and disable add button while we persist
+    if (toast) {
+      toast.textContent = "Saving...";
+      toast.style.background = 'rgba(60,120,200,0.95)';
+      toast.style.opacity = '1';
+    }
+    if (typeof addBtn !== 'undefined' && addBtn) addBtn.disabled = true;
+
+    // allow the browser to paint the 'Saving...' state, then do the blocking write
+    setTimeout(() => {
+      try {
+        localStorage.setItem("photoEntries", JSON.stringify(photoEntries));
+        if (toast) {
+          toast.textContent = 'Saved ✓';
+          toast.style.background = 'rgba(40,180,40,0.95)';
+        }
+      } catch (e) {
+        console.error("Failed to persist photoEntries:", e);
+        if (toast) {
+          toast.textContent = 'Save failed';
+          toast.style.background = 'rgba(200,40,40,0.95)';
+        }
+      } finally {
+        updateStorageTracker();
+        // leave the 'Saved' message visible briefly then hide and re-enable add button
+        setTimeout(() => {
+          if (toast) toast.style.opacity = '0';
+          if (typeof addBtn !== 'undefined' && addBtn) addBtn.disabled = false;
+        }, 900);
+      }
+    }, 20);
+}
+// single updateStorageTracker is defined above; avoid duplicate definitions
+
+//function persist() {
+//   localStorage.setItem("photoEntries", JSON.stringify(photoEntries));
+//}
+//function refreshEmptyMessage() { emptyMsg.style.display = Object.keys(photoEntries).length>0 ? "none" : "block"; }
+//
+//photoInput.addEventListener("change",()=> {
+//   const count = photoInput.files.length;
+//
+//   if (count >0) {
+//       fileStatus.textContent = `${count} photo${count > 1 ? "s" : ""} selected`;
+//       fileStatus.style.color = "#a8ffb0";
+//   } else{
+//       fileStatus.textContent = "No photo selected";
+//       fileStatus.style.color = "#d8e0ff";
+//   }
+//});
+
+// ---------------- NAVIGATION BAR
 function addNavigation(year, monthNum) {
   const navDiv = document.createElement("div");
-  navDiv.className = "nav-bar";
-
-  const backBtn = document.createElement("button");
-  backBtn.textContent = "← Back";
-  backBtn.onclick = () => {
-    if(currentView==="month") showYearView();
-    else if(currentView==="day") showMonthView(currentYear);
-    else if(currentView==="dayDetail") showDayView(currentYear, currentMonth);
-  };
-  if(currentView==="year") backBtn.classList.add("disabled");
-  navDiv.appendChild(backBtn);
+  navDiv.className = "nav-bar glassify";
 
   const yearsBtn = document.createElement("button");
-  yearsBtn.textContent = "Years"; yearsBtn.onclick = () => showYearView();
+  yearsBtn.textContent = "Years";
+  yearsBtn.onclick = () => showYearView();
   navDiv.appendChild(yearsBtn);
 
   const monthsBtn = document.createElement("button");
   monthsBtn.textContent = "Months";
-  if(year) monthsBtn.onclick = () => showMonthView(year);
-  else monthsBtn.classList.add("disabled");
+  if (year !== undefined) {
+    monthsBtn.onclick = () => showMonthView(year);
+  } else {
+    monthsBtn.classList.add("disabled");
+  }
   navDiv.appendChild(monthsBtn);
 
   const daysBtn = document.createElement("button");
   daysBtn.textContent = "Days";
-  if(year && monthNum) daysBtn.onclick = () => showDayView(year, monthNum);
-  else daysBtn.classList.add("disabled");
+  if (year !== undefined && monthNum !== undefined) {
+    daysBtn.onclick = () => showDayView(year, monthNum);
+  } else {
+    daysBtn.classList.add("disabled");
+  }
   navDiv.appendChild(daysBtn);
 
-  document.getElementById("navContainer").innerHTML = "";
-  document.getElementById("navContainer").appendChild(navDiv);
+  // removed: "Current Month" button per user request
+
+  entriesDiv.prepend(navDiv);
 }
 
-// --- YEAR VIEW ---
-function showYearView() {
-  currentView="year"; currentYear=null; currentMonth=null;
-  entriesDiv.innerHTML=""; addNavigation();
-  const years = Object.keys(photoEntries).map(d=>d.split("-")[0])
-                .filter((v,i,a)=>a.indexOf(v)===i).sort().reverse();
-  if(years.length===0){ entriesDiv.innerHTML="<div class='empty'>No entries yet.</div>"; return; }
-  years.forEach(year=>{
-    const btn = document.createElement("button");
-    btn.textContent=year;
-    btn.addEventListener("click",()=>showMonthView(year));
-    entriesDiv.appendChild(btn);
+function getAllEntryDaysIDB() {
+  return new Promise((resolve, reject) => {
+    if (!db) return resolve([]);
+    const tx = db.transaction('entries', 'readonly');
+    const store = tx.objectStore('entries');
+    const req = store.openCursor();
+    const out = [];
+    req.onsuccess = (ev) => {
+      const cur = ev.target.result;
+      if (cur) {
+        out.push(cur.key);
+        cur.continue();
+      } else resolve(out);
+    };
+    req.onerror = () => reject(req.error);
   });
 }
 
-// --- MONTH VIEW ---
-function showMonthView(year){
-  currentView="month"; currentYear=year; currentMonth=null;
-  entriesDiv.innerHTML=""; addNavigation(year);
-  const title=document.createElement("h2"); title.textContent=`Year: ${year}`; entriesDiv.appendChild(title);
-  const monthsContainer=document.createElement("div"); monthsContainer.style.display="flex"; monthsContainer.style.flexWrap="wrap"; monthsContainer.style.justifyContent="center"; monthsContainer.style.gap="12px";
+// ---------------- YEAR VIEW ----------------
+function showYearView() {
+  entriesDiv.innerHTML = "";
+  addNavigation(undefined, undefined, "year");
+
+  // Go-to-today button
+  const todayBtn = document.createElement("button");
+  todayBtn.textContent = "📅 Go to Today";
+  todayBtn.className = "glassify";
+  todayBtn.style.display = "block";
+  todayBtn.style.margin = "0 auto 20px auto";
+  todayBtn.style.padding = "10px 16px";
+  todayBtn.style.borderRadius = "8px";
+  todayBtn.style.fontWeight = "600";
+  todayBtn.style.cursor = "pointer";
+  todayBtn.style.color = "white";
+  todayBtn.addEventListener("click", () => {
+    const today = new Date();
+    const year = today.getFullYear().toString();
+    const monthNum = (today.getMonth() + 1).toString().padStart(2, "0");
+    const dayNum = today.getDate().toString().padStart(2, "0");
+    showDayDetail(year, monthNum, dayNum);
+  });
+  entriesDiv.appendChild(todayBtn);
+
+  (async () => {
+    let days = [];
+    try {
+      const idbDays = await getAllEntryDaysIDB();
+      if (idbDays && idbDays.length) days = Array.from(new Set([...idbDays]));
+      else {
+        // fallback to legacy localStorage keys if IDB empty
+        days = Object.keys(photoEntries || {});
+      }
+    } catch (e) {
+      console.warn('failed to read IDB days, falling back to localStorage', e);
+      days = Object.keys(photoEntries || {});
+    }
+    const years = days.map(d => d.split('-')[0]).filter((v,i,a)=>a.indexOf(v)===i).sort().reverse();
+
+    // single range button for the five-year journal (2025-2029)
+    const rangeStart = 2025;
+    const rangeLabel = '2025-2029';
+    const btn = document.createElement("button");
+    btn.textContent = rangeLabel;
+    btn.classList.add("glassify");
+    btn.style.fontFamily = "Brush Script MT, cursive";
+    btn.style.fontSize = "30px";
+    btn.style.margin = "10px";
+    btn.style.padding = "50px 30px";
+    btn.style.borderRadius = "5px";
+    btn.style.cursor = "pointer";
+    btn.style.color = "rgba(255,255,255,1)";
+    btn.style.background = "rgba(255,255,255,0.1)";
+    btn.style.boxShadow = "5px 5px 10px rgba(0,0,0,0.7)";
+    btn.addEventListener("click", () => showMonthView(rangeStart.toString()));
+    entriesDiv.appendChild(btn);
+  })();
+}
+
+// ---------------- MONTH VIEW ----------------
+function showMonthView(year) {
+  entriesDiv.innerHTML = "";
+  addNavigation(year, undefined, "month");
+
+  const monthTitle = document.createElement("div");
+  monthTitle.className = "nav-bar glassify";
+  monthTitle.style.marginBottom = "20px";
+  monthTitle.style.justifyContent = "center";
+  monthTitle.style.fontSize = "24px";
+  monthTitle.style.fontWeight = "600";
+  monthTitle.style.color = "rgba(255,255,255,1)";
+  monthTitle.textContent = year;
+  entriesDiv.appendChild(monthTitle);
+
+  const monthsContainer = document.createElement("div");
+  monthsContainer.style.display = "flex";
+  monthsContainer.style.flexWrap = "wrap";
+  monthsContainer.style.justifyContent = "center";
+  monthsContainer.style.gap = "20px";
   entriesDiv.appendChild(monthsContainer);
-  const months=["January","February","March","April","May","June","July","August","September","October","November","December"];
-  months.forEach((monthName,index)=>{
-    const monthNum=(index+1).toString().padStart(2,"0");
-    const btn=document.createElement("button");
-    btn.textContent=monthName;
-    btn.addEventListener("click",()=>showDayView(year,monthNum));
+
+  const months = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  months.forEach((monthName, index) => {
+    const monthNum = (index + 1).toString().padStart(2, "0");
+    const btn = document.createElement("button");
+    btn.textContent = monthName;
+    btn.className = "glassify";
+    btn.style.width = "100px";
+    btn.style.padding = "12px 0";
+    btn.style.margin = "10px";
+    btn.style.borderRadius = "8px";
+    btn.style.cursor = "pointer";
+    btn.style.fontWeight = "600";
+    btn.style.color = "white";
+    btn.addEventListener("click", () => showDayView(year, monthNum));
     monthsContainer.appendChild(btn);
   });
+
+  const backBtn = document.createElement("button");
+  backBtn.textContent = "← Back to Years";
+  backBtn.className = "glassify";
+  backBtn.style.display = "block";
+  backBtn.style.margin = "20px auto";
+  backBtn.style.padding = "8px 14px";
+  backBtn.style.borderRadius = "8px";
+  backBtn.style.cursor = "pointer";
+  backBtn.style.color = "white";
+  backBtn.addEventListener("click", showYearView);
+  entriesDiv.appendChild(backBtn);
 }
 
-// --- DAY VIEW ---
-function showDayView(year,monthNum){
-  currentView="day"; currentYear=year; currentMonth=monthNum;
-  entriesDiv.innerHTML=""; addNavigation(year,monthNum);
-  const monthName=new Date(year,parseInt(monthNum)-1).toLocaleString('default',{month:'long'});
-  const title=document.createElement("h2"); title.textContent=`${monthName} ${year}`; entriesDiv.appendChild(title);
+// ---------------- DAY VIEW ----------------
+function showDayView(year, monthNum) {
+  entriesDiv.innerHTML = "";
+  addNavigation(year, monthNum, "day");
 
-  const daysContainer=document.createElement("div"); daysContainer.className="day-grid"; entriesDiv.appendChild(daysContainer);
-  const daysInMonth=new Date(year,parseInt(monthNum),0).getDate();
-  for(let day=1;day<=daysInMonth;day++){
-    const dayStr=day.toString().padStart(2,"0");
-    const btn=document.createElement("button"); btn.textContent=day;
-    const key=`${year}-${monthNum}-${dayStr}`;
-    if(photoEntries[key] && photoEntries[key].photos && photoEntries[key].photos.length>0){ 
-        btn.style.backgroundColor="#2d8cff"; btn.style.color="white"; 
-    }
-    btn.addEventListener("click",()=>showDayDetail(year,monthNum,dayStr));
+  const monthName = new Date(year, parseInt(monthNum) - 1).toLocaleString("default", { month: "long" });
+  const dayTitle = document.createElement("div");
+  dayTitle.className = "nav-bar glassify";
+  dayTitle.style.marginBottom = "20px";
+  dayTitle.style.justifyContent = "center";
+  dayTitle.style.fontSize = "24px";
+  dayTitle.style.fontWeight = "600";
+  dayTitle.style.color = "rgba(255,255,255,1)";
+  dayTitle.textContent = `${monthName} ${year}`;
+  entriesDiv.appendChild(dayTitle);
+
+  const daysContainer = document.createElement("div");
+  daysContainer.style.display = "grid";
+  daysContainer.style.gridTemplateColumns = "repeat(7, 1fr)";
+  daysContainer.style.gap = "8px";
+  daysContainer.style.justifyItems = "center";
+  entriesDiv.appendChild(daysContainer);
+
+  const daysInMonth = new Date(year, parseInt(monthNum), 0).getDate();
+  for (let day = 1; day <= daysInMonth; day++) {
+    const dayStr = day.toString().padStart(2, "0");
+    const key = `${year}-${monthNum}-${dayStr}`;
+    const btn = document.createElement("button");
+    btn.textContent = day;
+    btn.className = "glassify";
+    btn.style.color = "white";
+    btn.style.width = "40px";
+    btn.style.height = "40px";
+    btn.style.borderRadius = "6px";
+    btn.style.cursor = "pointer";
+    btn.style.fontWeight = "500";
+    btn.style.marginBottom = "10px";
+
+    // initial coloring left to async IDB check below; avoid reading legacy localStorage here
+
+    btn.addEventListener("click", () => showDayDetail(year, monthNum, dayStr));
     daysContainer.appendChild(btn);
+  }
+
+  // After rendering buttons, check IDB for photos and update styles asynchronously
+  (async () => {
+    for (const btn of daysContainer.querySelectorAll('button')) {
+      const day = btn.textContent.toString().padStart(2, '0');
+      const dayKey = `${year}-${monthNum}-${day}`;
+      try {
+        const rows = await getPhotosFromIDB(dayKey);
+        if (rows && rows.length > 0) btn.style.backgroundColor = 'rgba(0,121,6,0.5)';
+      } catch (e) {
+        // ignore
+      }
+    }
+  })();
+
+  const backBtn = document.createElement("button");
+  backBtn.textContent = "← Back to Months";
+  backBtn.className = "glassify";
+  backBtn.style.display = "block";
+  backBtn.style.margin = "20px auto";
+  backBtn.style.padding = "8px 14px";
+  backBtn.style.borderRadius = "8px";
+  backBtn.style.color = "white";
+  backBtn.style.cursor = "pointer";
+  backBtn.addEventListener("click", () => showMonthView(year));
+  entriesDiv.appendChild(backBtn);
+}
+
+// ---------------- DAY DETAIL VIEW ------------------------------------
+function showDayDetail(year, monthNum, dayNum) {
+  entriesDiv.innerHTML = "";
+  addNavigation(year, monthNum, "DayDetail");
+
+  // expose current day key so global controls can target and re-render this view
+  currentDayKey = `${year}-${monthNum.padStart(2,'0')}-${dayNum.padStart(2,'0')}`;
+
+  const monthName = new Date(year, parseInt(monthNum) - 1).toLocaleString('default', { month: 'long' });
+
+  // Header with date and navigation arrows (keeps single date text)
+  const dateContainer = document.createElement('div');
+  dateContainer.className = 'nav-bar glassify';
+  dateContainer.style.marginBottom = '12px';
+  dateContainer.style.justifyContent = 'center';
+  dateContainer.style.alignItems = 'center';
+  dateContainer.style.fontSize = '20px';
+  dateContainer.style.fontWeight = '600';
+  dateContainer.style.color = 'rgba(255,255,255,1)';
+  entriesDiv.appendChild(dateContainer);
+
+  const prevBtn = document.createElement('button');
+  prevBtn.textContent = '←';
+  prevBtn.className = 'glassify';
+  prevBtn.style.marginRight = '12px';
+  prevBtn.addEventListener('click', () => {
+    const date = new Date(year, parseInt(monthNum) - 1, dayNum);
+    date.setDate(date.getDate() - 1);
+    showDayDetail(date.getFullYear().toString(), (date.getMonth() + 1).toString().padStart(2, '0'), date.getDate().toString().padStart(2, '0'));
+  });
+  dateContainer.appendChild(prevBtn);
+
+  const dateText = document.createElement('span');
+  dateText.textContent = `${monthName} ${dayNum}`;
+  dateContainer.appendChild(dateText);
+
+  const nextBtn = document.createElement('button');
+  nextBtn.textContent = '→';
+  nextBtn.className = 'glassify';
+  nextBtn.style.marginLeft = '12px';
+  nextBtn.addEventListener('click', () => {
+    const date = new Date(year, parseInt(monthNum) - 1, dayNum);
+    date.setDate(date.getDate() + 1);
+    showDayDetail(date.getFullYear().toString(), (date.getMonth() + 1).toString().padStart(2, '0'), date.getDate().toString().padStart(2, '0'));
+  });
+  dateContainer.appendChild(nextBtn);
+
+  // Container that will hold one section per year (stacked vertically)
+  const multiContainer = document.createElement('div');
+  multiContainer.style.display = 'flex';
+  multiContainer.style.flexDirection = 'column';
+  multiContainer.style.gap = '12px';
+  entriesDiv.appendChild(multiContainer);
+
+  const startYear = 2025;
+  const years = Array.from({ length: 5 }, (_, i) => (startYear + i).toString());
+
+  // For each year create a section
+  years.forEach((y) => {
+    const key = `${y}-${monthNum.padStart(2, '0')}-${dayNum.padStart(2, '0')}`;
+
+    const section = document.createElement('div');
+    section.className = 'year-section glassify';
+    section.style.padding = '10px';
+    section.style.minHeight = '280px';
+    section.style.display = 'flex';
+    section.style.flexDirection = 'column';
+    section.style.alignItems = 'stretch';
+
+    // Year header
+    const header = document.createElement('div');
+    header.textContent = y;
+    header.style.fontSize = '18px';
+    header.style.color = "rgba(200,200,200,1)";
+    header.style.fontWeight = '700';
+    header.style.marginBottom = '8px';
+    header.style.textAlign = 'center';
+    section.appendChild(header);
+
+    // Weekday and weather selectors (inline controls in the header area)
+    const weekdayButtons = [];
+    const weatherButtons = [];
+    const selectorsRow = document.createElement('div');
+    selectorsRow.style.display = 'flex';
+    selectorsRow.style.justifyContent = 'space-between';
+    selectorsRow.style.alignItems = 'center';
+    selectorsRow.style.marginBottom = '8px';
+
+    // Weekday selector (S M T W Th F S)
+    const weekdayDiv = document.createElement('div');
+    weekdayDiv.style.display = 'flex';
+    weekdayDiv.style.gap = '6px';
+    weekdayDiv.style.alignItems = 'center';
+    const weekdayLabels = ['S','M','T','W','Th','F','S'];
+    const weekdayTitles = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+    weekdayLabels.forEach((lbl, idx) => {
+      const b = document.createElement('button');
+      b.textContent = lbl;
+      b.title = weekdayTitles[idx];
+      b.style.padding = '6px 8px';
+      b.style.color = 'white';
+      b.style.borderRadius = '6px';
+      b.style.fontSize = '12px';
+      b.className = 'glassify';
+      b.dataset.weekday = String(idx);
+      b.addEventListener('click', async () => {
+        try {
+          const meta = await getEntryMetaIDB(key);
+          const prev = (typeof meta.weekday === 'number') ? meta.weekday : null;
+          if (prev === idx) {
+            // deselect
+            delete meta.weekday;
+          } else {
+            meta.weekday = idx;
+          }
+          await saveEntryMetaIDB(key, meta);
+          weekdayButtons.forEach((wb, i) => {
+            wb.style.background = (meta.weekday === i) ? 'rgba(255,255,255,0.8)' : '';
+            wb.style.color = (meta.weekday === i) ? 'black' : 'white';
+          });
+          updateStorageTracker();
+        } catch (e) { console.error('save weekday failed', e); }
+      });
+      weekdayButtons.push(b);
+      weekdayDiv.appendChild(b);
+    });
+
+    // Weather selector (5 options)
+    const weatherDiv = document.createElement('div');
+    weatherDiv.style.display = 'flex';
+    weatherDiv.style.gap = '6px';
+    weatherDiv.style.alignItems = 'center';
+    const weatherOptions = [
+      { key: 'sunny', label: '☀️', title: 'Sunny' },
+      { key: 'partly', label: '⛅', title: 'Partly Cloudy' },
+      { key: 'cloudy', label: '☁️', title: 'Cloudy' },
+      { key: 'rain', label: '🌧️', title: 'Rain' },
+      { key: 'storm', label: '⛈️', title: 'Thunderstorm' }
+    ];
+    weatherOptions.forEach((opt) => {
+      const wb = document.createElement('button');
+      wb.textContent = opt.label;
+      wb.title = opt.title;
+      wb.style.padding = '6px 8px';
+      wb.style.borderRadius = '6px';
+      wb.style.fontSize = '14px';
+      wb.className = 'glassify';
+      wb.dataset.weather = opt.key;
+      wb.addEventListener('click', async () => {
+        try {
+          const meta = await getEntryMetaIDB(key);
+          const prev = (typeof meta.weather === 'string') ? meta.weather : null;
+          if (prev === opt.key) {
+            delete meta.weather;
+          } else {
+            meta.weather = opt.key;
+          }
+          await saveEntryMetaIDB(key, meta);
+          weatherButtons.forEach(w => {
+            w.style.background = (w.dataset.weather === meta.weather) ? 'rgba(255,255,255,0.5)' : '';
+            w.style.color = (w.dataset.weather === meta.weather) ? 'black' : '';
+          });
+          updateStorageTracker();
+        } catch (e) { console.error('save weather failed', e); }
+      });
+      weatherButtons.push(wb);
+      weatherDiv.appendChild(wb);
+    });
+
+    selectorsRow.appendChild(weekdayDiv);
+    selectorsRow.appendChild(weatherDiv);
+    section.appendChild(selectorsRow);
+
+  // Photos container: fixed height horizontal scroller so adding many images
+  // doesn't push layout around. Users can scroll horizontally to see more.
+  const photosDivY = document.createElement('div');
+  photosDivY.style.display = 'flex';
+  photosDivY.style.flexWrap = 'nowrap';
+  photosDivY.style.gap = '8px';
+  photosDivY.style.overflowX = 'auto';
+  photosDivY.style.overflowY = 'hidden';
+  photosDivY.style.height = '110px';
+  photosDivY.style.alignItems = 'center';
+  photosDivY.style.marginBottom = '8px';
+  photosDivY.style.padding = '6px';
+  photosDivY.style.background = 'rgba(255,255,255,0.03)';
+  photosDivY.style.borderRadius = '6px';
+  section.appendChild(photosDivY);
+
+  // Small loading/status and image count badge
+  const loadingY = document.createElement('div');
+  loadingY.style.fontSize = '12px';
+  loadingY.style.minHeight = '18px';
+  loadingY.style.marginBottom = '6px';
+  section.appendChild(loadingY);
+
+  const countBadge = document.createElement('div');
+  countBadge.style.position = 'absolute';
+  countBadge.style.right = '12px';
+  countBadge.style.top = '8px';
+  countBadge.style.background = 'rgba(0,0,0,0.5)';
+  countBadge.style.color = 'white';
+  countBadge.style.padding = '4px 8px';
+  countBadge.style.borderRadius = '12px';
+  countBadge.style.fontSize = '12px';
+  countBadge.textContent = '';
+  // place badge inside section visually by making header container relative
+  section.style.position = 'relative';
+  section.appendChild(countBadge);
+
+    // Journal area
+    const journalY = document.createElement('textarea');
+    journalY.placeholder = 'Write your journal entry here...';
+    journalY.style.width = '100%';
+    journalY.style.height = '90px';
+    journalY.classList.add('glassify');
+    journalY.style.marginTop = '8px';
+    section.appendChild(journalY);
+
+    // Add / Delete controls
+    const controls = document.createElement('div');
+    controls.style.display = 'flex';
+    controls.style.justifyContent = 'center';
+    controls.style.gap = '8px';
+    controls.style.marginTop = '8px';
+
+    const addBtnY = document.createElement('button');
+    addBtnY.textContent = 'Add Photo';
+    addBtnY.className = 'glassify';
+    controls.appendChild(addBtnY);
+
+  const fileStatusY = document.createElement('div');
+  fileStatusY.textContent = 'No photo selected';
+  fileStatusY.className = 'file-status-default';
+  fileStatusY.style.fontSize = '12px';
+  fileStatusY.style.alignSelf = 'center';
+  controls.appendChild(fileStatusY);
+
+    const deleteBtnY = document.createElement('button');
+    deleteBtnY.textContent = 'Delete Selected';
+    deleteBtnY.className = 'glassify';
+    controls.appendChild(deleteBtnY);
+
+    section.appendChild(controls);
+
+    // Create a unique hidden file input per year
+    const fileInputY = document.createElement('input');
+    fileInputY.type = 'file';
+    fileInputY.accept = 'image/*';
+    fileInputY.multiple = true;
+    fileInputY.style.display = 'none';
+    document.body.appendChild(fileInputY);
+
+    // helper to update the small fileStatusY
+    function updateLocalFileStatus(el) {
+      const count = el.files ? el.files.length : 0;
+      if (count === 0) {
+        fileStatusY.textContent = 'No photo selected';
+        fileStatusY.classList.remove('file-status-selected');
+        fileStatusY.classList.add('file-status-default');
+      } else {
+        fileStatusY.textContent = `${count} photo${count > 1 ? 's' : ''} selected`;
+        fileStatusY.classList.remove('file-status-default');
+        fileStatusY.classList.add('file-status-selected');
+      }
+    }
+
+  fileInputY.addEventListener('change', (e) => updateLocalFileStatus(e.target));
+
+    // Add button opens file picker for this year
+    addBtnY.addEventListener('click', () => fileInputY.click());
+
+    // when files selected for this year, upload them
+    fileInputY.addEventListener('change', async (ev) => {
+      const files = Array.from(ev.target.files || []);
+      if (!files.length) return;
+      loadingY.textContent = `Saving ${files.length} photo${files.length > 1 ? 's' : ''}...`;
+      try {
+        for (const f of files) {
+          await addPhotoToIDB(key, f, f.name);
+        }
+        loadingY.textContent = 'Photos added';
+      } catch (err) {
+        console.error('addPhotoToIDB failed', err);
+        loadingY.textContent = 'Some photos failed to save.';
+      }
+  // refresh just this year's photos and meta
+  await renderYearPhotos();
+      try { await getIndexedDBUsageBytes(); updateStorageTracker(); } catch(e){ updateStorageTracker(); }
+      ev.target.value = '';
+      updateLocalFileStatus(ev.target);
+    });
+
+    // Delete selected handler
+    deleteBtnY.addEventListener('click', () => {
+      const selected = Array.from(photosDivY.querySelectorAll('input[type="checkbox"]:checked')).map(cb => parseInt(cb.closest('[data-photo-id]').getAttribute('data-photo-id'), 10));
+      if (!selected.length) return;
+      const modal = document.getElementById('deleteModal');
+      modal.classList.remove('hidden');
+      document.getElementById('deleteModalText').textContent = `Delete ${selected.length} selected photo${selected.length > 1 ? 's' : ''}?`;
+      document.getElementById('deleteConfirm').onclick = async () => {
+        try {
+          for (const pid of selected) await deletePhotoFromIDB(pid);
+          const meta = await getEntryMetaIDB(key);
+          if (meta.descriptions) {
+            for (const pid of selected) delete meta.descriptions[pid];
+            await saveEntryMetaIDB(key, meta);
+          }
+        } catch (err) { console.error('delete failed', err); }
+        modal.classList.add('hidden');
+        await renderYearPhotos();
+        updateStorageTracker();
+      };
+      document.getElementById('deleteCancel').onclick = () => modal.classList.add('hidden');
+    });
+
+    // render photos and hook viewer for this year
+    async function renderYearPhotos() {
+      photosDivY.innerHTML = '';
+      const rows = await getPhotosFromIDB(key);
+      const meta = await getEntryMetaIDB(key);
+      // apply weekday and weather button states if present
+      try {
+        if (meta) {
+          if (typeof meta.weekday === 'number') {
+            weekdayButtons.forEach((wb, i) => {
+              wb.style.background = i === meta.weekday ? 'rgba(255,255,255,0.8)' : '';
+              wb.style.color = i === meta.weekday ? 'black' : 'white';
+            });
+          }
+          if (typeof meta.weather === 'string') {
+            weatherButtons.forEach(wb => {
+              wb.style.background = wb.dataset.weather === meta.weather ? 'rgba(255,255,255,0.5)' : '';
+              wb.style.color = wb.dataset.weather === meta.weather ? 'black' : '';
+            });
+          }
+        }
+      } catch (e) { /* ignore visual update errors */ }
+      const photosForViewer = [];
+      const thumbUrls = [];
+      for (const r of rows) {
+        const photoContainer = document.createElement('div');
+        photoContainer.style.position = 'relative';
+        photoContainer.style.display = 'inline-block';
+        photoContainer.setAttribute('data-photo-id', r.id);
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.style.position = 'absolute';
+        checkbox.style.top = '4px';
+        checkbox.style.left = '4px';
+        checkbox.style.width = '20px';
+        checkbox.style.height = '20px';
+        checkbox.style.cursor = 'pointer';
+        photoContainer.appendChild(checkbox);
+
+        const img = document.createElement('img');
+        try {
+          const rec = await getPhotoRecordById(r.id);
+          if (rec && rec.blob) {
+            const url = URL.createObjectURL(rec.blob);
+            thumbUrls.push(url);
+            img.src = url;
+          } else img.src = '';
+        } catch (e) { img.src = ''; }
+        img.alt = `Photo for ${key}`;
+        img.style.width = '100px';
+        img.style.height = '100px';
+        img.style.objectFit = 'cover';
+        img.style.borderRadius = '6px';
+        img.style.boxShadow = '2px 2px 6px rgba(0,0,0,0.5)';
+        photoContainer.appendChild(img);
+
+        photosDivY.appendChild(photoContainer);
+        photosForViewer.push({ id: r.id, blob: r.blob, filename: r.filename, createdAt: r.createdAt });
+      }
+  // wire viewer
+      const imgs = photosDivY.querySelectorAll('img');
+      imgs.forEach((imgEl, i) => imgEl.addEventListener('click', () => openImageViewer(photosForViewer, i, key)));
+      // revoke any previous thumbs stored on this container
+      const prev = photosDivY._thumbUrls || [];
+      for (const u of prev) try { URL.revokeObjectURL(u); } catch (e) {}
+      photosDivY._thumbUrls = thumbUrls;
+
+      // update count badge to show how many images exist
+      if (rows.length === 0) {
+        countBadge.textContent = 'No photos';
+      } else if (rows.length === 1) {
+        countBadge.textContent = '1 photo';
+      } else {
+        countBadge.textContent = `${rows.length} photos`;
+      }
+
+      // populate journal
+      if (meta && typeof meta.journal === 'string') journalY.value = meta.journal;
+      else journalY.value = '';
+    }
+
+    // autosave journal for this year
+    let saveTimeoutY;
+    journalY.addEventListener('input', () => {
+      clearTimeout(saveTimeoutY);
+      saveTimeoutY = setTimeout(async () => {
+        try {
+          const meta = await getEntryMetaIDB(key);
+          meta.journal = journalY.value;
+          await saveEntryMetaIDB(key, meta);
+          updateStorageTracker();
+        } catch (e) { console.error('save journal failed', e); }
+      }, 800);
+    });
+
+    // initial render for this year
+    renderYearPhotos();
+
+    multiContainer.appendChild(section);
+  });
+
+  // Back to days button below the multi sections
+  const backWrap = document.createElement('div');
+  backWrap.style.textAlign = 'center';
+  backWrap.style.marginTop = '12px';
+  const backBtn = document.createElement('button');
+  backBtn.textContent = '← Back to Days';
+  backBtn.className = 'glassify';
+  backBtn.addEventListener('click', () => showDayView(year, monthNum));
+  backWrap.appendChild(backBtn);
+  entriesDiv.appendChild(backWrap);
+}
+
+
+
+
+// ---------------- BACKUP STUFF -------------------
+function downloadBackup() {
+  const entries = localStorage.getItem("photoEntries");
+  if (!entries) return;
+
+  const blob = new Blob([entries], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  const date = new Date().toISOString().split("T")[0];
+  a.href = url;
+  a.download = `photoJournalBackup.json`;
+
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+function autoBackupDaily() {
+  const lastBackupDate = localStorage.getItem("lastBackupDate");
+  const today = new Date().toISOString().split("T")[0];
+
+  if (lastBackupDate !== today) {
+    downloadBackup();
+    localStorage.setItem("lastBackupDate", today);
   }
 }
 
-// --- DAY DETAIL ---
-function showDayDetail(year,monthNum,dayNum){
-  currentView="dayDetail"; currentYear=year; currentMonth=monthNum; currentDayKey=`${year}-${monthNum.padStart(2,'0')}-${dayNum.padStart(2,'0')}`;
-  entriesDiv.innerHTML=""; addNavigation(year,monthNum);
-  
-  const date=new Date(year,parseInt(monthNum)-1,dayNum);
-  const title=document.createElement("h2"); title.textContent=date.toDateString(); entriesDiv.appendChild(title);
 
-  const photosDiv=document.createElement("div"); photosDiv.className="photo-container"; entriesDiv.appendChild(photosDiv);
-  const journalArea=document.createElement("textarea"); journalArea.placeholder="Write your journal entry here..."; 
-  journalArea.value=(photoEntries[currentDayKey] && photoEntries[currentDayKey].journal)||""; entriesDiv.appendChild(journalArea);
+// Run once when the app loads
+autoBackupDaily();
 
-  const saveBtn=document.createElement("button"); saveBtn.textContent="Save Journal"; saveBtn.addEventListener("click",()=>{
-    if(!photoEntries[currentDayKey]) photoEntries[currentDayKey]={photos:[],journal:""};
-    photoEntries[currentDayKey].journal=journalArea.value; persist(); alert("Journal saved!");
-  }); entriesDiv.appendChild(saveBtn);
-
-  const photos=(photoEntries[currentDayKey] && photoEntries[currentDayKey].photos)||[];
-  photos.forEach(src=>{
-    const img=document.createElement("img"); img.src=src;
-    img.addEventListener("click",()=>{
-      if(!confirm("Delete this photo?")) return;
-      photoEntries[currentDayKey].photos=photoEntries[currentDayKey].photos.filter(p=>p!==src);
-      if(photoEntries[currentDayKey].photos.length===0 && !photoEntries[currentDayKey].journal) delete photoEntries[currentDayKey];
-      persist(); showDayDetail(year,monthNum,dayNum);
-    }); photosDiv.appendChild(img);
-  });
-}
-
-// --- ADD PHOTO ---
-addBtn.addEventListener("click", e => {
-  e.preventDefault();
-  if(!currentDayKey){ alert("Select a day first."); return; }
-  const file = photoInput.files[0]; if(!file){ alert("Select an image."); return; }
-  const reader = new FileReader();
-  reader.onload = ev => {
-    const dataUrl = ev.target.result;
-    if(!photoEntries[currentDayKey]) photoEntries[currentDayKey]={photos:[],journal:""};
-    photoEntries[currentDayKey].photos.push(dataUrl);
-    persist();
-    const [year, month, day] = currentDayKey.split("-");
-    showDayDetail(year, month, day);
-    photoInput.value="";
-  };
-  reader.readAsDataURL(file);
+document.getElementById("importBtn").addEventListener("click", () => {
+  document.getElementById("backupInput").click();
 });
 
-// --- INIT ---
-refreshEmptyMessage(); showYearView();
+document.getElementById("backupInput").addEventListener("change", function(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    try {
+      const importedData = JSON.parse(e.target.result);
+
+      if (typeof importedData !== "object") {
+        alert("Invalid backup file.");
+        return;
+      }
+
+      const confirmImport = confirm(
+        "This will overwrite your current journal data. Continue?"
+      );
+      if (!confirmImport) return;
+
+  localStorage.setItem("photoEntries", JSON.stringify(importedData));
+      alert("Backup imported successfully! The page will now reload.");
+      location.reload();
+    } catch (err) {
+      alert("Failed to import backup: " + err.message);
+    }
+  };
+  reader.readAsText(file);
+});
+
+
+
+
+// ---------------- INITIALIZE APP ----------------
+document.addEventListener("DOMContentLoaded", () => {
+  openIDB().then(instance => {
+    db = instance;
+    migrateFromLocalStorage().then(() => {
+      showYearView();
+      // update storage tracker including IDB usage
+      getIndexedDBUsageBytes().then(idbBytes => {
+        try {
+          const lsBytes = new Blob([JSON.stringify(localStorage)]).size;
+          const total = lsBytes + idbBytes;
+          // assume 100MB soft-cap for display purposes
+          const max = 100 * 1024 * 1024;
+          const percent = Math.min(100, Math.round((total / max) * 100));
+          const tracker = document.getElementById('storageTracker');
+          if (tracker) tracker.textContent = `Storage: ${percent}%`;
+        } catch (e) {
+          updateStorageTracker();
+        }
+      });
+    });
+  }).catch(err => {
+    console.warn('IndexedDB open failed, falling back to localStorage', err);
+    showYearView();
+    updateStorageTracker();
+  });
+});
+
+
+
 </script>
 </body>
 </html>
-
