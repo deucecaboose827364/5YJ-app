@@ -594,14 +594,7 @@ function showYearView() {
   // Go-to-today button
   const todayBtn = document.createElement("button");
   todayBtn.textContent = "📅 Go to Today";
-  todayBtn.className = "glassify";
-  todayBtn.style.display = "block";
-  todayBtn.style.margin = "0 auto 20px auto";
-  todayBtn.style.padding = "10px 16px";
-  todayBtn.style.borderRadius = "8px";
-  todayBtn.style.fontWeight = "600";
-  todayBtn.style.cursor = "pointer";
-  todayBtn.style.color = "white";
+  todayBtn.className = "glassify go-today";
   todayBtn.addEventListener("click", () => {
     const today = new Date();
     const year = today.getFullYear().toString();
@@ -632,15 +625,7 @@ function showYearView() {
     const btn = document.createElement("button");
     btn.textContent = rangeLabel;
     btn.classList.add("glassify");
-    btn.style.fontFamily = "Brush Script MT, cursive";
-    btn.style.fontSize = "30px";
-    btn.style.margin = "10px";
-    btn.style.padding = "50px 30px";
-    btn.style.borderRadius = "5px";
-    btn.style.cursor = "pointer";
-    btn.style.color = "rgba(255,255,255,1)";
-    btn.style.background = "rgba(255,255,255,0.1)";
-    btn.style.boxShadow = "5px 5px 10px rgba(0,0,0,0.7)";
+  btn.className = 'glassify range-btn';
     btn.addEventListener("click", () => showMonthView(rangeStart.toString()));
     entriesDiv.appendChild(btn);
   })();
@@ -652,20 +637,12 @@ function showMonthView(year) {
   addNavigation(year, undefined, "month");
 
   const monthTitle = document.createElement("div");
-  monthTitle.className = "nav-bar glassify";
-  monthTitle.style.marginBottom = "20px";
-  monthTitle.style.justifyContent = "center";
-  monthTitle.style.fontSize = "24px";
-  monthTitle.style.fontWeight = "600";
-  monthTitle.style.color = "rgba(255,255,255,1)";
+  monthTitle.className = "nav-bar glassify month-title";
   monthTitle.textContent = year;
   entriesDiv.appendChild(monthTitle);
 
   const monthsContainer = document.createElement("div");
-  monthsContainer.style.display = "flex";
-  monthsContainer.style.flexWrap = "wrap";
-  monthsContainer.style.justifyContent = "center";
-  monthsContainer.style.gap = "20px";
+  monthsContainer.className = 'months-container';
   entriesDiv.appendChild(monthsContainer);
 
   const months = [
@@ -678,13 +655,7 @@ function showMonthView(year) {
     const btn = document.createElement("button");
     btn.textContent = monthName;
     btn.className = "glassify";
-    btn.style.width = "100px";
-    btn.style.padding = "12px 0";
-    btn.style.margin = "10px";
-    btn.style.borderRadius = "8px";
-    btn.style.cursor = "pointer";
-    btn.style.fontWeight = "600";
-    btn.style.color = "white";
+  btn.className = 'glassify month-btn';
     btn.addEventListener("click", () => showDayView(year, monthNum));
     monthsContainer.appendChild(btn);
   });
@@ -692,12 +663,7 @@ function showMonthView(year) {
   const backBtn = document.createElement("button");
   backBtn.textContent = "← Back to Years";
   backBtn.className = "glassify";
-  backBtn.style.display = "block";
-  backBtn.style.margin = "20px auto";
-  backBtn.style.padding = "8px 14px";
-  backBtn.style.borderRadius = "8px";
-  backBtn.style.cursor = "pointer";
-  backBtn.style.color = "white";
+  backBtn.className = 'glassify back-btn';
   backBtn.addEventListener("click", showYearView);
   entriesDiv.appendChild(backBtn);
 }
@@ -709,36 +675,21 @@ function showDayView(year, monthNum) {
 
   const monthName = new Date(year, parseInt(monthNum) - 1).toLocaleString("default", { month: "long" });
   const dayTitle = document.createElement("div");
-  dayTitle.className = "nav-bar glassify";
-  dayTitle.style.marginBottom = "20px";
-  dayTitle.style.justifyContent = "center";
-  dayTitle.style.fontSize = "24px";
-  dayTitle.style.fontWeight = "600";
-  dayTitle.style.color = "rgba(255,255,255,1)";
+  dayTitle.className = "nav-bar glassify day-title";
   dayTitle.textContent = `${monthName} ${year}`;
   entriesDiv.appendChild(dayTitle);
 
   const daysContainer = document.createElement("div");
-  daysContainer.style.display = "grid";
-  daysContainer.style.gridTemplateColumns = "repeat(7, 1fr)";
-  daysContainer.style.gap = "8px";
-  daysContainer.style.justifyItems = "center";
+  daysContainer.className = 'day-grid';
   entriesDiv.appendChild(daysContainer);
 
   const daysInMonth = new Date(year, parseInt(monthNum), 0).getDate();
   for (let day = 1; day <= daysInMonth; day++) {
     const dayStr = day.toString().padStart(2, "0");
     const key = `${year}-${monthNum}-${dayStr}`;
-    const btn = document.createElement("button");
-    btn.textContent = day;
-    btn.className = "glassify";
-    btn.style.color = "white";
-    btn.style.width = "40px";
-    btn.style.height = "40px";
-    btn.style.borderRadius = "6px";
-    btn.style.cursor = "pointer";
-    btn.style.fontWeight = "500";
-    btn.style.marginBottom = "10px";
+  const btn = document.createElement("button");
+  btn.textContent = day;
+  btn.className = "glassify day-btn";
 
     // initial coloring left to async IDB check below; avoid reading legacy localStorage here
 
@@ -753,7 +704,7 @@ function showDayView(year, monthNum) {
       const dayKey = `${year}-${monthNum}-${day}`;
       try {
         const rows = await getPhotosFromIDB(dayKey);
-        if (rows && rows.length > 0) btn.style.backgroundColor = 'rgba(0,121,6,0.5)';
+        if (rows && rows.length > 0) btn.classList.add('has-photos');
       } catch (e) {
         // ignore
       }
@@ -762,13 +713,7 @@ function showDayView(year, monthNum) {
 
   const backBtn = document.createElement("button");
   backBtn.textContent = "← Back to Months";
-  backBtn.className = "glassify";
-  backBtn.style.display = "block";
-  backBtn.style.margin = "20px auto";
-  backBtn.style.padding = "8px 14px";
-  backBtn.style.borderRadius = "8px";
-  backBtn.style.color = "white";
-  backBtn.style.cursor = "pointer";
+  backBtn.className = "glassify back-btn";
   backBtn.addEventListener("click", () => showMonthView(year));
   entriesDiv.appendChild(backBtn);
 }
@@ -785,19 +730,12 @@ function showDayDetail(year, monthNum, dayNum) {
 
   // Header with date and navigation arrows (keeps single date text)
   const dateContainer = document.createElement('div');
-  dateContainer.className = 'nav-bar glassify';
-  dateContainer.style.marginBottom = '12px';
-  dateContainer.style.justifyContent = 'center';
-  dateContainer.style.alignItems = 'center';
-  dateContainer.style.fontSize = '20px';
-  dateContainer.style.fontWeight = '600';
-  dateContainer.style.color = 'rgba(255,255,255,1)';
+  dateContainer.className = 'nav-bar glassify date-container';
   entriesDiv.appendChild(dateContainer);
 
   const prevBtn = document.createElement('button');
   prevBtn.textContent = '←';
-  prevBtn.className = 'glassify';
-  prevBtn.style.marginRight = '12px';
+  prevBtn.className = 'glassify nav-arrow prev';
   prevBtn.addEventListener('click', () => {
     const date = new Date(year, parseInt(monthNum) - 1, dayNum);
     date.setDate(date.getDate() - 1);
@@ -811,8 +749,7 @@ function showDayDetail(year, monthNum, dayNum) {
 
   const nextBtn = document.createElement('button');
   nextBtn.textContent = '→';
-  nextBtn.className = 'glassify';
-  nextBtn.style.marginLeft = '12px';
+  nextBtn.className = 'glassify nav-arrow next';
   nextBtn.addEventListener('click', () => {
     const date = new Date(year, parseInt(monthNum) - 1, dayNum);
     date.setDate(date.getDate() + 1);
@@ -822,9 +759,7 @@ function showDayDetail(year, monthNum, dayNum) {
 
   // Container that will hold one section per year (stacked vertically)
   const multiContainer = document.createElement('div');
-  multiContainer.style.display = 'flex';
-  multiContainer.style.flexDirection = 'column';
-  multiContainer.style.gap = '12px';
+  multiContainer.className = 'multi-container';
   entriesDiv.appendChild(multiContainer);
 
   const startYear = 2025;
@@ -838,14 +773,10 @@ function showDayDetail(year, monthNum, dayNum) {
   section.className = 'year-section glassify';
 
     // Year header
-    const header = document.createElement('div');
-    header.textContent = y;
-    header.style.fontSize = '18px';
-    header.style.color = "rgba(200,200,200,1)";
-    header.style.fontWeight = '700';
-    header.style.marginBottom = '8px';
-    header.style.textAlign = 'center';
-    section.appendChild(header);
+  const header = document.createElement('div');
+  header.textContent = y;
+  header.className = 'header';
+  section.appendChild(header);
 
     // Weekday and weather selectors (inline controls in the header area)
     const weekdayButtons = [];
@@ -862,27 +793,19 @@ function showDayDetail(year, monthNum, dayNum) {
       const b = document.createElement('button');
       b.textContent = lbl;
       b.title = weekdayTitles[idx];
-      b.style.padding = '6px 8px';
-      b.style.color = 'white';
-      b.style.borderRadius = '6px';
-      b.style.fontSize = '12px';
-      b.className = 'glassify';
+      b.className = 'glassify weekday-btn';
       b.dataset.weekday = String(idx);
       b.addEventListener('click', async () => {
         try {
           const meta = await getEntryMetaIDB(key);
           const prev = (typeof meta.weekday === 'number') ? meta.weekday : null;
           if (prev === idx) {
-            // deselect
             delete meta.weekday;
           } else {
             meta.weekday = idx;
           }
           await saveEntryMetaIDB(key, meta);
-          weekdayButtons.forEach((wb, i) => {
-            wb.style.background = (meta.weekday === i) ? 'rgba(255,255,255,0.8)' : '';
-            wb.style.color = (meta.weekday === i) ? 'black' : 'white';
-          });
+          weekdayButtons.forEach((wb, i) => wb.classList.toggle('weekday-selected', meta.weekday === i));
           updateStorageTracker();
         } catch (e) { console.error('save weekday failed', e); }
       });
@@ -904,10 +827,7 @@ function showDayDetail(year, monthNum, dayNum) {
       const wb = document.createElement('button');
       wb.textContent = opt.label;
       wb.title = opt.title;
-      wb.style.padding = '6px 8px';
-      wb.style.borderRadius = '6px';
-      wb.style.fontSize = '14px';
-      wb.className = 'glassify';
+      wb.className = 'glassify weather-btn';
       wb.dataset.weather = opt.key;
       wb.addEventListener('click', async () => {
         try {
@@ -919,10 +839,7 @@ function showDayDetail(year, monthNum, dayNum) {
             meta.weather = opt.key;
           }
           await saveEntryMetaIDB(key, meta);
-          weatherButtons.forEach(w => {
-            w.style.background = (w.dataset.weather === meta.weather) ? 'rgba(255,255,255,0.5)' : '';
-            w.style.color = (w.dataset.weather === meta.weather) ? 'black' : '';
-          });
+          weatherButtons.forEach(w => w.classList.toggle('weather-selected', w.dataset.weather === meta.weather));
           updateStorageTracker();
         } catch (e) { console.error('save weather failed', e); }
       });
@@ -948,8 +865,7 @@ function showDayDetail(year, monthNum, dayNum) {
   const countBadge = document.createElement('div');
   countBadge.className = 'count-badge';
   countBadge.textContent = '';
-  // place badge inside section visually by making header container relative
-  section.style.position = 'relative';
+  // place badge inside section visually (container is positioned by CSS)
   section.appendChild(countBadge);
 
     // Journal area
@@ -1059,16 +975,14 @@ function showDayDetail(year, monthNum, dayNum) {
       try {
         if (meta) {
           if (typeof meta.weekday === 'number') {
-            weekdayButtons.forEach((wb, i) => {
-              wb.style.background = i === meta.weekday ? 'rgba(255,255,255,0.8)' : '';
-              wb.style.color = i === meta.weekday ? 'black' : 'white';
-            });
+            weekdayButtons.forEach((wb, i) => wb.classList.toggle('weekday-selected', meta.weekday === i));
+          } else {
+            weekdayButtons.forEach(wb => wb.classList.remove('weekday-selected'));
           }
           if (typeof meta.weather === 'string') {
-            weatherButtons.forEach(wb => {
-              wb.style.background = wb.dataset.weather === meta.weather ? 'rgba(255,255,255,0.5)' : '';
-              wb.style.color = wb.dataset.weather === meta.weather ? 'black' : '';
-            });
+            weatherButtons.forEach(wb => wb.classList.toggle('weather-selected', wb.dataset.weather === meta.weather));
+          } else {
+            weatherButtons.forEach(wb => wb.classList.remove('weather-selected'));
           }
         }
       } catch (e) { /* ignore visual update errors */ }
@@ -1143,11 +1057,10 @@ function showDayDetail(year, monthNum, dayNum) {
 
   // Back to days button below the multi sections
   const backWrap = document.createElement('div');
-  backWrap.style.textAlign = 'center';
-  backWrap.style.marginTop = '12px';
+  backWrap.className = 'back-wrap';
   const backBtn = document.createElement('button');
   backBtn.textContent = '← Back to Days';
-  backBtn.className = 'glassify';
+  backBtn.className = 'glassify back-btn';
   backBtn.addEventListener('click', () => showDayView(year, monthNum));
   backWrap.appendChild(backBtn);
   entriesDiv.appendChild(backWrap);

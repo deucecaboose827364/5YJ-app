@@ -27,11 +27,19 @@ body {
   background-position: center;
   /* background-attachment: fixed can cause issues on mobile; switch to scroll for better performance */
   background-attachment: scroll;
-  margin:0; padding:10px 20px; color:#222;
+  margin:0; padding:calc(10px + env(safe-area-inset-top)) 20px 20px; color:#222;
 }
 body::before {
   content: ""; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1;
 }
+
+/* Normalize inputs/buttons for more consistent mobile appearance */
+button, input, select, textarea { -webkit-appearance: none; appearance: none; }
+button { min-height: 40px; }
+
+/* Make controls large enough for touch */
+.controls button, .file-label, .nav-bar button, .month-btn, .day-btn { padding: 10px 12px; }
+
 
 /* ===== File input / controls ===== */
 .file-input { display: none; }
@@ -122,6 +130,31 @@ button { font-family:inherit; background-color: rgba(255,255,255,.2); color: whi
   .nav-btn { margin: 0 8px; }
   .day-grid { grid-template-columns: repeat(2, 1fr) !important; }
 }
+
+/* Additional UI classes used by JS (keeps look consistent) */
+.go-today, .back-btn, .month-btn, .day-btn { padding: 8px 14px; border-radius: 8px; display: inline-block; cursor: pointer; }
+.go-today { display:block; margin: 0 auto 20px auto; font-weight:600; color: white; }
+.range-btn { font-family: "Brush Script MT", cursive; font-size: 30px; margin:10px; padding: 50px 30px; border-radius:5px; color: rgba(255,255,255,1); background: rgba(255,255,255,0.1); box-shadow: 5px 5px 10px rgba(0,0,0,0.7); }
+.month-title { margin-bottom: 20px; justify-content:center; font-size:24px; font-weight:600; color: rgba(255,255,255,1); }
+.months-container { display:flex; flex-wrap:wrap; justify-content:center; gap:20px; }
+.month-btn { width:100px; padding:12px 0; margin:10px; border-radius:8px; font-weight:600; color:white; }
+.back-wrap { text-align:center; margin-top:12px; }
+.back-btn { color:white; }
+.day-title { margin-bottom:20px; justify-content:center; font-size:24px; font-weight:600; color: rgba(255,255,255,1); }
+.day-grid { display:grid; grid-template-columns: repeat(7, 1fr); gap:8px; justify-items:center; }
+.day-btn { color:white; width:40px; height:40px; border-radius:6px; font-weight:500; margin-bottom:10px; }
+.nav-arrow { padding:6px 10px; }
+.nav-arrow.prev { margin-right: 12px; }
+.nav-arrow.next { margin-left: 12px; }
+.multi-container { display:flex; flex-direction:column; gap:12px; }
+/* weekday/weather button styles */
+.weekday-btn, .weather-btn { padding:6px 8px; border-radius:6px; font-size:12px; color: white; }
+.weekday-selected { background: rgba(255,255,255,0.8); color: black !important; }
+.weather-selected { background: rgba(255,255,255,0.5); color: black !important; }
+.date-container { margin-bottom: 12px; display:flex; justify-content:center; align-items:center; }
+
+/* day button state for days with photos */
+.has-photos { background-color: rgba(0,121,6,0.5) !important; }
 
 /* helper: allow JS to toggle hidden class */
 .hidden { display: none !important; }
