@@ -36,7 +36,7 @@ body {
   background-position: center center;
   background-size: cover;
   background-attachment: fixed;
-  background-color: #efeae6;
+  background-color: #1e0f03;
   margin:0; padding:calc(10px + env(safe-area-inset-top)) 20px 20px; color:#222;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
@@ -169,12 +169,12 @@ button { font-family:inherit; background-color: rgba(255,255,255,.2); color: whi
 .nav-arrow { padding:6px 10px; }
 .nav-arrow.prev { margin-right: 12px; }
 .nav-arrow.next { margin-left: 12px; }
-.multi-container { display:flex; flex-direction:column; gap:12px; }
+.multi-container { display:flex; flex-direction:column; gap:12px; width: 100%; }
 /* weekday/weather button styles */
 .weekday-btn, .weather-btn { padding:6px 8px; border-radius:6px; font-size:12px; color: white; }
 .weekday-selected { background: rgba(255,255,255,0.8); color: black !important; }
 .weather-selected { background: rgba(255,255,255,0.5); color: black !important; }
-.date-container { margin-bottom: 12px; display:flex; justify-content:center; align-items:center; }
+.date-container { margin-bottom: 12px; display:flex; justify-content:center; align-items:center; color: white; }
 
 /* day button state for days with photos */
 .has-photos { background-color: rgba(0,121,6,0.5) !important; }
