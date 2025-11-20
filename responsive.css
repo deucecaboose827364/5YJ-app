@@ -1,5 +1,13 @@
 /* Moved styles from index.html and added responsive rules */
-/* Global box-sizing / reset */
+/* Global tokens and box-sizing */
+:root{
+  --bg-overlay: rgba(0,0,0,0.45);
+  --glass-border: rgba(255,255,255,0.4);
+  --glass-elev: 6px 6px 14px rgba(0,0,0,0.55);
+  --accent: rgba(0,122,255,0.9);
+  --muted: #e8e6e4;
+  --content-width: 1100px;
+}
 *, *::before, *::after { box-sizing: border-box; }
 html,body { height: 100%; }
 
@@ -22,12 +30,17 @@ textarea.glassify {
 /* ===== BODY ===== */
 body {
   font-family: 'Times New Roman', Times, serif;
-  background: url("Background Image.png");
+  /* Primary background image — CSS file lives in `css/`, so reference the image in the project root with ../ */
+  background-image: url("../Background Image.png"), linear-gradient(180deg, rgba(244,240,237,0.15), rgba(232,230,228,0.15));
+  background-repeat: no-repeat;
+  background-position: center center;
   background-size: cover;
-  background-position: center;
-  /* background-attachment: fixed can cause issues on mobile; switch to scroll for better performance */
-  background-attachment: scroll;
+  background-attachment: fixed;
+  background-color: #efeae6;
   margin:0; padding:calc(10px + env(safe-area-inset-top)) 20px 20px; color:#222;
+  -webkit-font-smoothing:antialiased;
+  -moz-osx-font-smoothing:grayscale;
+  font-size: 16px; /* base */
 }
 body::before {
   content: ""; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1;
@@ -54,13 +67,14 @@ button { min-height: 40px; }
 
 .add-photo-button { background-color: rgba(0,0,255,0.1); border-radius: 10px; padding: 10px 16px; }
 
-h1 { text-align:center; margin-bottom:20px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); }
+/* Header scales but stays elegant on phone */
+h1 { text-align:center; margin-bottom:20px; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); font-size: clamp(22px, 5vw, 44px); line-height:1.05; }
 
-.controls { max-width:1100px; margin:20px auto; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
+.controls { max-width:var(--content-width); margin:20px auto; display:flex; gap:12px; align-items:center; justify-content:center; flex-wrap:wrap; }
 .controls input[type="file"] { padding:8px 10px; border-radius:8px; border:1px solid #a9a7b4; background: rgba(255,255,255,0.2); }
 .controls button { padding:8px 14px; border-radius:8px; border:none; color:white; cursor:pointer; font-weight:600; box-shadow: 5px 5px 10px rgba(0,0,0,0.5); }
 
-#entries { max-width:1100px; margin:0 auto; }
+#entries { max-width:var(--content-width); margin:0 auto; }
 .empty { text-align:center; color:#666; padding:24px; }
 
 button { font-family:inherit; background-color: rgba(255,255,255,.2); color: white; }
@@ -79,8 +93,8 @@ button { font-family:inherit; background-color: rgba(255,255,255,.2); color: whi
 #photoDescription { margin-top: 20px; width: 80%; height: 80px; border-radius: 8px; border: none; padding: 10px; resize: none; font-size: 14px; background: rgba(255,255,255,0.8); color: black; }
 
 /* Year section and child elements (moved from JS explicit inline styles) */
-.year-section { padding: 10px; min-height: 220px; display:flex; flex-direction:column; align-items:stretch; position: relative; background: rgba(255,255,255,0.02); border-radius: 8px; }
-.year-section .header { font-size: 18px; color: rgba(200,200,200,1); font-weight:700; margin-bottom:8px; text-align:center; }
+.year-section { padding: 12px; min-height: 140px; display:flex; flex-direction:column; align-items:stretch; position: relative; background: rgba(255,255,255,0.02); border-radius: 8px; }
+.year-section .header { font-size: 16px; color: rgba(200,200,200,1); font-weight:700; margin-bottom:8px; text-align:center; }
 .selectors-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .weekday-div, .weather-div { display:flex; gap:6px; align-items:center; }
 .weekday-div button, .weather-div button { padding:6px 8px; color:white; border-radius:6px; font-size:12px; }
@@ -106,29 +120,36 @@ button { font-family:inherit; background-color: rgba(255,255,255,.2); color: whi
 #storageTracker { position: fixed; bottom:4px; right:4px; font-size:10px; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.3); padding: 2px 6px; border-radius:4px; z-index:1000; }
 
 /* ===== Responsive tweaks ===== */
+
+/* Responsive adjustments (preserve look but fit) */
 @media (max-width: 900px) {
-  .controls { padding: 6px; }
+  .controls { padding: 8px; }
   .thumb { width:84px; height:84px; }
   .photos-row { height:90px; }
+  h1 { font-size: clamp(20px, 6vw, 36px); }
 }
 
 @media (max-width: 600px) {
-  body { padding: 8px 10px; }
+  /* make spacing tighter and scale elements down while keeping glass effect */
+  body { padding: calc(8px + env(safe-area-inset-top)) 10px 14px; }
   .nav-btn { width:44px; height:44px; font-size:20px; }
-  .nav-bar { gap:8px; padding:6px 10px; }
+  .nav-bar { gap:8px; padding:6px 8px; overflow-x:auto; }
   .thumb { width:64px; height:64px; }
   .photos-row { height:76px; }
   .year-section { min-height: auto; padding:8px; }
-  /* day grid will fall back to fewer columns */
-  .day-grid { grid-template-columns: repeat(3, 1fr) !important; }
+  .journal-textarea { height:72px; }
+  /* day grid becomes fluid but keeps small buttons */
+  .day-grid { grid-template-columns: repeat(auto-fit, minmax(44px, 1fr)) !important; gap:6px; }
+  .day-btn { width:44px; height:44px; }
+  .file-label, .controls button, .nav-bar button { padding:8px 10px; }
   #photoDescription { width: 92%; height: 64px; }
 }
 
 @media (max-width: 420px) {
   .controls { flex-direction: column; gap:8px; }
   .thumb { width:56px; height:56px; }
-  .nav-btn { margin: 0 8px; }
-  .day-grid { grid-template-columns: repeat(2, 1fr) !important; }
+  .nav-btn { margin: 0 6px; }
+  .day-grid { grid-template-columns: repeat(auto-fit, minmax(36px, 1fr)) !important; }
 }
 
 /* Additional UI classes used by JS (keeps look consistent) */
