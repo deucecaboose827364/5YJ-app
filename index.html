@@ -628,6 +628,18 @@ function showYearView() {
   btn.className = 'glassify range-btn';
     btn.addEventListener("click", () => showMonthView(rangeStart.toString()));
     entriesDiv.appendChild(btn);
+    
+      // Render individual year buttons beneath the range for direct navigation
+      const yearsContainer = document.createElement('div');
+      yearsContainer.className = 'months-container';
+      years.forEach(y => {
+        const ybtn = document.createElement('button');
+        ybtn.textContent = y;
+        ybtn.className = 'glassify month-btn';
+        ybtn.addEventListener('click', () => showMonthView(y));
+        yearsContainer.appendChild(ybtn);
+      });
+      entriesDiv.appendChild(yearsContainer);
   })();
 }
 
@@ -901,7 +913,8 @@ function showDayDetail(year, monthNum, dayNum) {
   fileInputY.accept = 'image/*';
   fileInputY.multiple = true;
   fileInputY.className = 'file-input';
-  document.body.appendChild(fileInputY);
+  // Append the hidden year-specific file input to the year's section (keeps DOM tidy and avoids stray file controls)
+  section.appendChild(fileInputY);
 
     // helper to update the small fileStatusY
     function updateLocalFileStatus(el) {

@@ -74,6 +74,9 @@ h1 { text-align:center; margin-bottom:20px; color: white; text-shadow: 2px 2px 8
 .controls button { padding:8px 14px; border-radius:8px; border:none; color:white; cursor:pointer; font-weight:600; box-shadow: 5px 5px 10px rgba(0,0,0,0.5); }
 
 #entries { max-width:var(--content-width); margin:0 auto; }
+.multi-container { display:flex; flex-direction:column; gap:12px; align-items:center; }
+.year-section { width: 100%; max-width: 760px; margin: 10px auto; }
+#entries { display:flex; flex-direction:column; align-items:center; }
 .empty { text-align:center; color:#666; padding:24px; }
 
 button { font-family:inherit; background-color: rgba(255,255,255,.2); color: white; }
@@ -85,14 +88,14 @@ button { font-family:inherit; background-color: rgba(255,255,255,.2); color: whi
 
 /* Image viewer overlay */
 .image-viewer-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); backdrop-filter: blur(10px); display:flex; align-items:center; justify-content:center; z-index: 999; }
-.image-viewer-overlay img { max-width: 90vw; max-height: 70vh; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: contain; }
+#viewerImage, .image-viewer-overlay img { max-width: 75vw; max-height: 60vh; border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.5); object-fit: contain; }
 #closeViewer { position: absolute; top: 20px; right: 30px; background: rgba(255,0,0,0.7); border: none; color: white; font-size: 28px; font-weight: bold; border-radius: 50%; width: 40px; height: 40px; cursor: pointer; }
 .nav-btn { background: rgba(255,255,255,0.2); border: none; color: white; font-size: 32px; border-radius: 50%; width: 50px; height: 50px; cursor: pointer; margin: 0 20px; }
 
 #photoDescription { margin-top: 20px; width: 80%; height: 80px; border-radius: 8px; border: none; padding: 10px; resize: none; font-size: 14px; background: rgba(255,255,255,0.8); color: black; }
 
 /* Year section and child elements (moved from JS explicit inline styles) */
-.year-section { padding: 12px; min-height: 140px; display:flex; flex-direction:column; align-items:stretch; position: relative; background: rgba(255,255,255,0.02); border-radius: 8px; }
+.year-section { padding: 12px; min-height: 140px; display:flex; flex-direction:column; align-items:stretch; position: relative; background: rgba(255,255,255,0.04); border-radius: 12px; box-shadow: var(--glass-elev); }
 .year-section .header { font-size: 16px; color: rgba(200,200,200,1); font-weight:700; margin-bottom:8px; text-align:center; }
 .selectors-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:8px; }
 .weekday-div, .weather-div { display:flex; gap:6px; align-items:center; }
