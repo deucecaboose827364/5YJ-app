@@ -42,13 +42,12 @@ body {
   -moz-osx-font-smoothing:grayscale;
   font-size: 16px; /* base */
 }
-body::before {
-  content: ""; position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: -1;
-}
+/* Removed an aggressive opaque overlay that could obscure the background image on some browsers */
 
-/* Normalize inputs/buttons for more consistent mobile appearance */
-button, input, select, textarea { -webkit-appearance: none; appearance: none; }
-button { min-height: 40px; }
+/* Normalize form controls; keep button native appearance for better platform look & feel */
+input, select, textarea { -webkit-appearance: none; appearance: none; }
+/* Buttons keep a gentle translucent style but preserve platform affordances */
+button { min-height: 40px; font-family: inherit; background-color: rgba(0,0,0,0.32); color: white; border-radius: 8px; border: 1px solid rgba(255,255,255,0.06); padding: 8px 12px; }
 
 /* Make controls large enough for touch */
 .controls button, .file-label, .nav-bar button, .month-btn, .day-btn { padding: 10px 12px; }
@@ -61,7 +60,7 @@ button { min-height: 40px; }
   background: rgba(255,255,255,0.2); color: white; font-weight: 600; cursor: pointer;
   transition: background 0.2s ease;
 }
-.file-label:hover { background: rgba(0,12,255,0.6); }
+.file-label:hover { background: rgba(255,255,255,0.28); color: black; }
 .file-status-default { color: rgba(255,255,255,0.9); }
 .file-status-selected { color: #a8ffb0; }
 
